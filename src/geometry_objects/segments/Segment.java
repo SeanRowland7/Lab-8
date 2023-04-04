@@ -1,6 +1,12 @@
 package geometry_objects.segments;
 
-import geometry_objects.GeometricObject;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import geometry_objects.delegates.LineDelegate;
+import geometry_objects.delegates.SegmentDelegate;
+import geometry_objects.delegates.intersections.IntersectionDelegate;
 import geometry_objects.points.Point;
 import utilities.math.MathUtilities;
 import utilities.math.analytic_geometry.GeometryUtilities;
@@ -10,9 +16,12 @@ public class Segment extends GeometricObject
 	protected Point _point1;
 	protected Point _point2;
 
+	protected double _length;
+	protected double _slope;
+
 	public Point getPoint1() { return _point1; }
 	public Point getPoint2() { return _point2; }
-
+	public double length() { return _length; }
 	public double slope()
 	{
 		try { return GeometryUtilities.slope(_point1, _point2); }
@@ -26,11 +35,52 @@ public class Segment extends GeometricObject
 		_point2 = p2;
 	}
 
+	/*
+	 * @param that -- a segment (as a segment: finite)
+	 * @return the midpoint of this segment (finite)
+	 */
+	public Point segmentIntersection(Segment that) {  return IntersectionDelegate.segmentIntersection(this, that); }
+
+	/*
+	 * @param pt -- a point
+	 * @return true / false if this segment (finite) contains the point
+	 */
+	public boolean pointLiesOn(Point pt) { return this.pointLiesOnSegment(pt); }
+
+	/*
+	 * @param pt -- a point
+	 * @return true / false if this segment (finite) contains the point
+	 */
+	public boolean pointLiesOnSegment(Point pt) { return SegmentDelegate.pointLiesOnSegment(this, pt); }
+
+	/*
+	 * @param pt -- a point
+	 * @return true if the point is on the segment (EXcluding endpoints); finite examination only
+	 */
+	public boolean pointLiesBetweenEndpoints(Point pt) { return SegmentDelegate.pointLiesBetweenEndpoints(this, pt); }
+
 	/**
-	 * Determines if this segment that segment share an endpoint
+	 * Does this segment contain a subsegment?
+	 *   Example:
+	 *                A-------B-------C------D
+	 *
+	 *         Subsegments of AD are: AB, AC, AD, BC, BD, CD
+	 * 
+	 * @param candidate
+	 * @return true if this segment contains candidate as subsegment.
+	 */
+	public boolean HasSubSegment(Segment candidate)
+	{
+        // TODO
+	}
+
+	/**
+	 * Determines if this segment and that segment share an endpoint
+	 
 	 * @param s -- a segment
+
 	 * @return the shared endpoint
-	 *         returns null if they are the same segment
+	 *         returns null if no endpoints are the same segment
 	 */
 	public Point sharedVertex(Segment that)
 	{
@@ -46,11 +96,19 @@ public class Segment extends GeometricObject
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (obj == null) return false;
+		
 		if (!(obj instanceof Segment)) return false;
 		Segment that = (Segment)obj;
 
 		return this.has(that.getPoint1()) && this.has(that.getPoint2());
 	}
+
+	/*
+	 * @param that -- another segment
+	 * @return true / false if the two lines (infinite) are collinear
+	 */
+	public boolean isCollinearWith(Segment that) { return LineDelegate.areCollinear(this, that); }
 
 	/*
 	 * @param pt -- a point
@@ -84,5 +142,50 @@ public class Segment extends GeometricObject
 	public int hashCode()
 	{
 		return _point1.hashCode() +_point2.hashCode();
+	}
+
+	/*
+	 * @param that -- a segment
+	 * @return true if the segments coincide, but do not overlap:
+	 *
+	 * True case:
+	 *                    this                  that
+	 *             ----------------           ===========
+     *
+	 * True case:
+	 *                    this    that
+	 *             |----------|==========|     
+	 * 
+	 * Note: the segment MAY share an endpoint
+	 */
+	public boolean coincideWithoutOverlap(Segment that)
+	{
+        // TODO
+	}
+	
+	/**
+	 *   Example:
+	 *                             Q *
+	 *
+	 *                A-------B-------C------D     E
+	 *
+	 *      * Z
+	 *
+	 *  Given:
+     *	    Segment(A, D) and points {A, B, C, D, E, Q, Z},
+	 *      this method will return the set {A, B, C, D} in this order
+     *      since it is lexicographically sorted.
+	 *
+	 *      Points Q, Z, and E are NOT on the segment.
+	 *
+	 * @return the sorted subset of Points that lie on this segment (ordered lexicographically)
+	 */
+	public SortedSet<Point> collectOrderedPointsOnSegment(Set<Point> points)
+	{
+		SortedSet<Point> pointsOn = new TreeSet<Point>();
+
+        // TODO
+
+		return pointsOn;
 	}
 }
