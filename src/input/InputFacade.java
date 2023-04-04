@@ -17,9 +17,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import geometry_objects.Segment;
 import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
-import geometry_objects.segments.Segment;
+
 import input.builder.GeometryBuilder;
 import input.components.FigureNode;
 import input.components.point.PointNode;
