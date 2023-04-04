@@ -1,4 +1,4 @@
-package geometry_objects.segments;
+package geometry_objects;
 
 import java.util.Set;
 import java.util.SortedSet;
