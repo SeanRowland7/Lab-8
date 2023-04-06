@@ -12,6 +12,8 @@ import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
 import preprocessor.delegates.ImplicitPointPreprocessor;
 import geometry_objects.Segment;
+import geometry_objects.delegates.SegmentDelegate;
+import geometry_objects.delegates.intersections.IntersectionDelegate;
 
 public class Preprocessor
 {
@@ -88,9 +90,30 @@ public class Preprocessor
 		_nonMinimalSegments.forEach((segment) -> _segmentDatabase.put(segment, segment));
 	}
 
-	private Set<Segment> computeImplicitBaseSegments(Set<Point> _implicitPoints2) {
-		// TODO Auto-generated method stub
-		return null;
+	//
+	// Implicit Segments attributed to implicit points
+	//
+	private Set<Segment> computeImplicitBaseSegments(Set<Point> implicitPoints) 
+	{
+		Set<Segment> implicitBaseSegments = new LinkedHashSet<Segment>();
+
+		for (Point pt : implicitPoints)
+		{
+			for (Segment seg : _givenSegments)
+			{
+				// if an implicit point lies on a segment (exclusing end points)
+				
+				// not sure if this is the right method, theres a lot that seem to do
+				// very similar things
+				if (SegmentDelegate.pointLiesBetweenEndpoints(seg, pt))
+				{
+					//add a new segment from each end point to the implicit point
+					implicitBaseSegments.add(new Segment(seg.getPoint1(), pt));
+					implicitBaseSegments.add(new Segment(seg.getPoint2(), pt));
+				}
+			}
+		}
+		return implicitBaseSegments;
 	}
 	
 	private Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2,
