@@ -20,6 +20,18 @@ import preprocessor.delegates.ImplicitPointPreprocessor;
 class PreprocessorTest
 {
 	@Test
+	void test_compute_minimal_segments()
+	{
+		//TODO
+	}
+	
+	@Test
+	void _compute_nonminimal_segments()
+	{
+		//TODO
+	}
+	
+	@Test
 	void test_implicit_crossings()
 	{
 		                                 // TODO: Update this file path for your particular project

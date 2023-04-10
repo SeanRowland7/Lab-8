@@ -50,6 +50,11 @@ public class PointDatabase
         _factory.put(name, x, y);
 	}
 
+	public void put(double x, double y)
+	{
+        _factory.put(x, y);
+	}
+	
 	/**
 	 * Given raw coordinates of a point, determine if it is named.
 	 * 
@@ -58,12 +63,16 @@ public class PointDatabase
 	 */
 	public String getName(double x, double y)
 	{
-        return _factory.get(x, y)._name;
+        return getName(new Point(x, y));
 	}
 	
 	public String getName(Point pt)
 	{
-		return _factory.get(pt)._name;
+		Point pointInDatabase = getPoint(pt);
+		
+		if(pointInDatabase == null) return null;
+		
+		return pointInDatabase.getName();
 	}
 
 	/**
