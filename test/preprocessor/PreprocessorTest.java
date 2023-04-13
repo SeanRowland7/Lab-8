@@ -22,7 +22,8 @@ class PreprocessorTest
 	@Test 
 	void test_ImplicitPointPreprocessor_compute()
 	{
-		FigureNode fig = InputFacade.extractFigure("test2.json");
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments("");
+		FigureNode fig = InputFacade.extractFigure(figureStr);
 
 //		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation(fig);
 //
