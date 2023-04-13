@@ -73,7 +73,7 @@ public class Preprocessor
 
 		//
 		// Combine the given minimal segments and implicit segments into a true set of minimal segments
-		//     *givenSegments may not be minimal
+		//     * givenSegments may not be minimal
 		//     * implicitSegmen
 		//
 		_allMinimalSegments = identifyAllMinimalSegments(_implicitPoints, _givenSegments, _implicitSegments);
@@ -117,14 +117,38 @@ public class Preprocessor
 		return implicitBaseSegments;
 	}
 	
-	private Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2,
-			Set<Segment> _implicitSegments2) {
-		// TODO Auto-generated method stub
-		return null;
+	//
+	// Combine the given minimal segments and implicit segments into a true set of minimal segments
+	//     * givenSegments may not be minimal
+	//     * implicitSegmen
+	//
+	private Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints, Set<Segment> _givenSegments,
+			Set<Segment> _implicitSegments) 
+	{
+		Set<Segment> allMinimalSegments = new HashSet<Segment>();
+		
+		for (Segment seg : _givenSegments)
+		{
+			if (!Segment.HasSubSegment(seg)) allMinimalSegments.add(seg);
+		}
+		
+		for (Segment seg : _implicitSegments)
+		{
+			if (!Segment.HasSubSegment(seg)) allMinimalSegments.add(seg);
+		}
+		
+		return allMinimalSegments;
 	}
 	
-	private Set<Segment> constructAllNonMinimalSegments(Set<Segment> _allMinimalSegments2) {
-		// TODO Auto-generated method stub
-		return null;
+	private Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
+	{
+		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
+		
+		for (Segment seg : allMinimalSegments)
+		{
+			if (!Segment.HasSubSegment(seg)) nonMinimalSegments.add(seg);
+		}
+		
+		return nonMinimalSegments;
 	}
 }
