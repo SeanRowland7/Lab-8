@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
@@ -98,36 +99,29 @@ public class Preprocessor
 	{
 		Set<Segment> implicitBaseSegments = new LinkedHashSet<Segment>();
 
-		implicitBaseSegments.addAll(checkAgainstSegments(implicitBaseSegments, implicitPoints));
-		implicitBaseSegments.addAll(checkAgainstSegments(implicitBaseSegments, implicitPoints));
-		
-		return implicitBaseSegments;
-	}
-	
-	public Set<Segment> checkAgainstSegments(Set<Segment> totalList,Set<Point> points)
-	{
-		for (Point pt : points)
+		for (Segment seg : _givenSegments)
 		{
-			for (Segment seg : _givenSegments)
+			SortedSet<Point> ptList = new TreeSet<Point>();
+
+			Point left = seg.getPoint1(); 
+			Point right = seg.getPoint2();
+
+			ptList.add(left);
+			ptList.addAll(seg.collectOrderedPointsOnSegment(implicitPoints));
+			ptList.add(right);
+
+			Point[] ptArr = ptList.toArray(new Point[ptList.size()]);
+
+			for (int x = 0; x < ptArr.length - 1; x++)
 			{
-				// if an implicit point lies on a segment (excluding end points)
-
-
-
-				// not sure if this is the right method, theres a lot that seem to do
-				// very similar things
-				if (SegmentDelegate.pointLiesBetweenEndpoints(seg, pt))
-
-				if (seg.pointLiesBetweenEndpoints(pt))
-				{
-					//add a new segment from each end point to the implicit point
-					totalList.add(new Segment(seg.getPoint1(), pt));
-					totalList.add(new Segment(seg.getPoint2(), pt));
-				}
+				Segment newSeg = new Segment(ptArr[x], ptArr[x+1]);
+				if(!_givenSegments.contains(newSeg))
+					implicitBaseSegments.add(newSeg);
 			}
 		}
-		return totalList;
+		return implicitBaseSegments;
 	}
+
 
 	//
 	// Combine the given minimal segments and implicit segments into a true set of minimal segments
@@ -137,57 +131,31 @@ public class Preprocessor
 	public Set<Segment> identifyAllMinimalSegments(Set<Point> implicitPoints, Set<Segment> givenSegments,
 			Set<Segment> implicitSegments) 
 	{
-		Set<Segment> minimalSegments = new HashSet<Segment>();
+		Set<Segment> allMinimalSegments = new HashSet<Segment>();
 
-		addMinimalSegmentsFromSet(implicitPoints, givenSegments, minimalSegments);
-		addMinimalSegmentsFromSet(implicitPoints, implicitSegments, minimalSegments);
-		
-		return minimalSegments;
-	}
-	
-	public void addMinimalSegmentsFromSet(Set<Point> implicitPoints, Set<Segment> potentialMinimalSegments,
-			Set<Segment> minimalSegments)
-	{
-		// Check all the segments that might be minimal segments.
-		for(Segment segToCheck : potentialMinimalSegments)
+		allMinimalSegments.addAll(implicitSegments);
+		allMinimalSegments.addAll(givenSegments);
+
+
+		// remove a seg from givenSeg if an implicit pt is on it (not end pt)
+		for (Segment seg : givenSegments)
 		{
-			// The segToCheck is considered minimal unless an implicit point lies between it
-			boolean isSegMinimal = true;
-			
-			// Check every implicit point
-			for(Point implicitPoint : implicitPoints)
+			for (Point pt : implicitPoints)
 			{
-				// If the segment contains an implicit point, then it should not be added.
-				if(segToCheck.pointLiesBetweenEndpoints(implicitPoint)) 
-				{
-					isSegMinimal = false;
-					//break;
-				}
-			}
-			
-			// If the point is minimal then add it to the set.
-			if(isSegMinimal) minimalSegments.add(segToCheck);
+				if (seg.pointLiesBetweenEndpoints(pt)) allMinimalSegments.remove(seg);
+			}	
 		}
+
+		return allMinimalSegments;
 	}
 
+
+	//
+	// Construct all segments inductively from the base segments
+	//
 	public Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
 	{
 		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
-
-		// compare all minimal segs
-		for (Segment seg1 : allMinimalSegments)
-		{
-			for (Segment seg2 : allMinimalSegments)
-			{
-				// if a seg coincides, get the first points x and the second points y and add
-				if (seg1.coincideWithoutOverlap(seg2))
-				{
-					Segment nonMin = new Segment(seg1.getPoint1(), seg1.getPoint2());
-					nonMinimalSegments.add(nonMin);
-				}
-			}
-		}
-
 		return nonMinimalSegments;
 	}
 }

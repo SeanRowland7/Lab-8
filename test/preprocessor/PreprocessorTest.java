@@ -93,7 +93,6 @@ class PreprocessorTest
 		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
 		assertEquals(5, iPoints.size());
 
-		System.out.println(iPoints);
 
 		//
 		//
@@ -148,6 +147,7 @@ class PreprocessorTest
 		expectedISegments.add(new Segment(e_star, d_star));
 		expectedISegments.add(new Segment(d_star, c_star));
 
+		
 		for (Segment iSegment : iSegments)
 		{
 			assertTrue(expectedISegments.contains(iSegment));

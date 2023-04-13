@@ -202,4 +202,9 @@ public class Segment extends GeometricObject
 
 		return pointsOn;
 	}
+	
+	public String toString() {
+	    return "Segment(" + _point1 + ", " + _point2 + ")";
+	}
+	
 }
