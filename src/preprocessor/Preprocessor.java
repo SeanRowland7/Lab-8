@@ -102,7 +102,7 @@ public class Preprocessor
 		{
 			for (Segment seg : _givenSegments)
 			{
-				// if an implicit point lies on a segment (exclusing end points)
+				// if an implicit point lies on a segment (excluding end points)
 				
 				// not sure if this is the right method, theres a lot that seem to do
 				// very similar things
