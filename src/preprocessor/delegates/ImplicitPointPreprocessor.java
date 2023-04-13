@@ -34,12 +34,12 @@ public class ImplicitPointPreprocessor
 				Segment seg2 = givenSegments.get(seg2Index);
 
 	
-				Point intersectionPoint = IntersectionDelegate.segmentIntersection(seg1, seg2);
+				Point intersectionPoint = seg1.segmentIntersection(seg2);
 
 				//int sizePrior = givenPoints.size();
 
 				// Put the point in the database so it gets a generated name
-				givenPoints.put(intersectionPoint.getX(), intersectionPoint.getY());
+				//givenPoints.put(intersectionPoint.getX(), intersectionPoint.getY());
 
 
 				// If an intersection point exists, then attempt to put it in the database
