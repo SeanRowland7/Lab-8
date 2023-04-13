@@ -22,7 +22,9 @@ class PreprocessorTest
 	@Test 
 	void test_ImplicitPointPreprocessor_compute()
 	{
+
 		FigureNode fig = InputFacade.extractFigure("test.json");
+
 
 		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation(fig);
 

@@ -117,6 +117,7 @@ public class PointNamingFactory
 	 */
 	public Point put(String name, double x, double y)
 	{
+		
 		Point pointToAdd = new Point(name, x, y);
 		
 		// Check if the point already exists
