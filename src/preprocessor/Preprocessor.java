@@ -113,9 +113,11 @@ public class Preprocessor
 				// if an implicit point lies on a segment (excluding end points)
 
 
+
 				// not sure if this is the right method, theres a lot that seem to do
 				// very similar things
 				if (SegmentDelegate.pointLiesBetweenEndpoints(seg, pt))
+
 				if (seg.pointLiesBetweenEndpoints(pt))
 				{
 					//add a new segment from each end point to the implicit point
