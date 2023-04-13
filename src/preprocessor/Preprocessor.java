@@ -134,24 +134,40 @@ public class Preprocessor
 	//     * givenSegments may not be minimal
 	//     * implicitSegmen
 	//
-	private Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints, Set<Segment> _givenSegments,
-			Set<Segment> _implicitSegments) 
+	private Set<Segment> identifyAllMinimalSegments(Set<Point> implicitPoints, Set<Segment> givenSegments,
+			Set<Segment> implicitSegments) 
 	{
-		Set<Segment> allMinimalSegments = new HashSet<Segment>();
+		Set<Segment> minimalSegments = new HashSet<Segment>();
 
-		Set<Segment> everything = new HashSet<Segment>();
-		everything.addAll(_implicitSegments);
-		everything.addAll(_givenSegments);
-
-		for (Segment seg1 : _givenSegments)
-			for (Segment seg2 : everything)
-				if (!seg1.HasSubSegment(seg2)) allMinimalSegments.add(seg1);
-
-		for (Segment seg1 : _implicitSegments)
-			for (Segment seg2 : everything)
-				if (!seg1.HasSubSegment(seg2)) allMinimalSegments.add(seg1);
-
-		return allMinimalSegments;
+		addMinimalSegmentsFromSet(implicitPoints, givenSegments, minimalSegments);
+		addMinimalSegmentsFromSet(implicitPoints, implicitSegments, minimalSegments);
+		
+		return minimalSegments;
+	}
+	
+	private void addMinimalSegmentsFromSet(Set<Point> implicitPoints, Set<Segment> potentialMinimalSegments,
+			Set<Segment> minimalSegments)
+	{
+		// Check all the segments that might be minimal segments.
+		for(Segment segToCheck : potentialMinimalSegments)
+		{
+			// The segToCheck is considered minimal unless an implicit point lies between it
+			boolean isSegMinimal = true;
+			
+			// Check every implicit point
+			for(Point implicitPoint : implicitPoints)
+			{
+				// If the segment contains an implicit point, then it should not be added.
+				if(segToCheck.pointLiesBetweenEndpoints(implicitPoint)) 
+				{
+					isSegMinimal = false;
+					//break;
+				}
+			}
+			
+			// If the point is minimal then add it to the set.
+			if(isSegMinimal) minimalSegments.add(segToCheck);
+		}
 	}
 
 	private Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
