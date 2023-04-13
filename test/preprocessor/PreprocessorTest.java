@@ -23,22 +23,84 @@ class PreprocessorTest
 	@Test
 	void test_Sean()
 	{
-		
+
 	}
-	
+
 	@Test
 	void test_Caden()
 	{
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments("collinear_line_segments.json");
+
+		ComponentNode node = InputFacade.extractFigure(figureStr);
+
+		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation((FigureNode) node);
+
+		PointDatabase points = pair.getKey();
+
+		Set<Segment> segments = pair.getValue();
+
+		Preprocessor pp = new Preprocessor(points, segments);
+
+		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
+		assertEquals(0, iPoints.size());
+
+
+		//
+		//
+		//		               D(3, 7)
+		//
+		//
+		//   E(-2,4)       D*      E*
+		//		         C*          A*       C(6, 3)
+		//                      B*
+		//		       A(2,0)        B(4, 0)
+		//
+		//		    An irregular pentagon with 5 C 2 = 10 segments
+
 		
+
+		//
+		// There are 15 implied segments inside the pentagon; see figure above
+		//
+		Set<Segment> iSegments = pp.computeImplicitBaseSegments(iPoints);
+		assertEquals(0, iSegments.size());
+
+
+
+		
+		
+
+		Set<Segment> minimalSegments = pp.identifyAllMinimalSegments(iPoints, segments, iSegments);
+		assertEquals(5, minimalSegments.size());
+
+		
+		//
+		// Construct ALL figure segments from the base segments
+		//
+		Set<Segment> computedNonMinimalSegments = pp.constructAllNonMinimalSegments(minimalSegments);
+
+		//
+		// All Segments will consist of the new 15 non-minimal segments.
+		//
+		assertEquals(8, computedNonMinimalSegments.size());
+
+		//
+		// Ensure we have ALL minimal segments: 20 in this figure.
+		//
+		
+		//
+		// Check size and content equality
+		//
+		assertEquals(8, computedNonMinimalSegments.size());
 	}
-	
+
 	@Test
 	void test_fully_connected_irregular_polygon()
 	{
 		String figureStr = utilities.io.FileUtilities.readFileFilterComments("fully_connected_irregular_polygon.json");
-				
+
 		ComponentNode node = InputFacade.extractFigure(figureStr);
-		
+
 		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation((FigureNode) node);
 
 		PointDatabase points = pair.getKey();
@@ -105,7 +167,7 @@ class PreprocessorTest
 		expectedISegments.add(new Segment(e_star, d_star));
 		expectedISegments.add(new Segment(d_star, c_star));
 
-		
+
 		for (Segment iSegment : iSegments)
 		{
 			assertTrue(expectedISegments.contains(iSegment));
