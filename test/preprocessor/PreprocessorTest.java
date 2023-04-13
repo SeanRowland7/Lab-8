@@ -20,68 +20,68 @@ import preprocessor.delegates.ImplicitPointPreprocessor;
 
 class PreprocessorTest
 {
-	
-	@Test 
-	void test_ImplicitPointPreprocessor_compute()
-	{
-		
-		String figureStr = utilities.io.FileUtilities.readFileFilterComments("collinear_line_segments.json");
-		
-		ComponentNode node = InputFacade.extractFigure(figureStr);
 
+	//	@Test 
+	//	void test_ImplicitPointPreprocessor_compute()
+	//	{
+	//		
+	//		String figureStr = utilities.io.FileUtilities.readFileFilterComments("collinear_line_segments.json");
+	//		
+	//		ComponentNode node = InputFacade.extractFigure(figureStr);
+	//
+	//
+	//		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation((FigureNode)node);
+	//
+	//		PointDatabase points = pair.getKey();
+	//
+	//		Set<Segment> segments = pair.getValue();
+	//
+	//		Preprocessor pp = new Preprocessor(points, segments);
+	//
+	//		// 1 new implied point on the line
+	//		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
+	//		assertEquals(3, iPoints.size());
+	//
+	//		System.out.println(iPoints);
+	//
+	//		//
+	//		//		A(0, 0)		*B		C(0, 2)
+	//		//
+	//		//   A segment from A to C
+	//
+	//		//
+	//		//
+	//		//		               D(3, 7)
+	//		//
+	//		//
+	//		//   E(-2,4)       D*      E*
+	//		//		         C*          A*       C(6, 3)
+	//		//                      B*
+	//		//		       A(2,0)        B(4, 0)
+	//		//
+	//		//		    An irregular pentagon with 5 C 2 = 10 segments
+	//	}
+	//
+	//	@Test
+	//	void test_compute_minimal_segments()
+	//	{
+	//		//TODO
+	//	}
+	//
+	//	@Test
+	//	void _compute_nonminimal_segments()
+	//	{
+	//		//TODO
+	//	}
 
-		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation((FigureNode)node);
-
-		PointDatabase points = pair.getKey();
-
-		Set<Segment> segments = pair.getValue();
-
-		Preprocessor pp = new Preprocessor(points, segments);
-
-		// 1 new implied point on the line
-		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
-		assertEquals(3, iPoints.size());
-
-		System.out.println(iPoints);
-
-		//
-		//		A(0, 0)		*B		C(0, 2)
-		//
-		//   A segment from A to C
-
-		//
-		//
-		//		               D(3, 7)
-		//
-		//
-		//   E(-2,4)       D*      E*
-		//		         C*          A*       C(6, 3)
-		//                      B*
-		//		       A(2,0)        B(4, 0)
-		//
-		//		    An irregular pentagon with 5 C 2 = 10 segments
-	}
-
-	@Test
-	void test_compute_minimal_segments()
-	{
-		//TODO
-	}
-
-	@Test
-	void _compute_nonminimal_segments()
-	{
-		//TODO
-	}
-
-	/**
 	@Test
 	void test_implicit_crossings()
 	{
-		// TODO: Update this file path for your particular project
-		FigureNode fig = InputFacade.extractFigure("fully_connected_irregular_polygon.json");
-
-		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation(fig);
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments("fully_connected_irregular_polygon.json");
+				
+		ComponentNode node = InputFacade.extractFigure(figureStr);
+		
+		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation((FigureNode) node);
 
 		PointDatabase points = pair.getKey();
 
@@ -214,8 +214,5 @@ class PreprocessorTest
 		{
 			assertTrue(expectedNonMinimalSegments.contains(computedNonMinimalSegment));
 		}
-		
 	}
-	*/
-	
 }
