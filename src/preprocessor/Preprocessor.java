@@ -94,7 +94,7 @@ public class Preprocessor
 	//
 	// Implicit Segments attributed to implicit points
 	//
-	private Set<Segment> computeImplicitBaseSegments(Set<Point> implicitPoints) 
+	public Set<Segment> computeImplicitBaseSegments(Set<Point> implicitPoints) 
 	{
 		Set<Segment> implicitBaseSegments = new LinkedHashSet<Segment>();
 
@@ -104,7 +104,7 @@ public class Preprocessor
 		return implicitBaseSegments;
 	}
 	
-	private Set<Segment> checkAgainstSegments(Set<Segment> totalList,Set<Point> points)
+	public Set<Segment> checkAgainstSegments(Set<Segment> totalList,Set<Point> points)
 	{
 		for (Point pt : points)
 		{
@@ -134,7 +134,7 @@ public class Preprocessor
 	//     * givenSegments may not be minimal
 	//     * implicitSegmen
 	//
-	private Set<Segment> identifyAllMinimalSegments(Set<Point> implicitPoints, Set<Segment> givenSegments,
+	public Set<Segment> identifyAllMinimalSegments(Set<Point> implicitPoints, Set<Segment> givenSegments,
 			Set<Segment> implicitSegments) 
 	{
 		Set<Segment> minimalSegments = new HashSet<Segment>();
@@ -145,7 +145,7 @@ public class Preprocessor
 		return minimalSegments;
 	}
 	
-	private void addMinimalSegmentsFromSet(Set<Point> implicitPoints, Set<Segment> potentialMinimalSegments,
+	public void addMinimalSegmentsFromSet(Set<Point> implicitPoints, Set<Segment> potentialMinimalSegments,
 			Set<Segment> minimalSegments)
 	{
 		// Check all the segments that might be minimal segments.
@@ -170,7 +170,7 @@ public class Preprocessor
 		}
 	}
 
-	private Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
+	public Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
 	{
 		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
 
