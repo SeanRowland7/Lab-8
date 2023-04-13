@@ -33,17 +33,10 @@ public class ImplicitPointPreprocessor
 				Segment seg1 = givenSegments.get(seg1Index);
 				Segment seg2 = givenSegments.get(seg2Index);
 
-	
 				Point intersectionPoint = seg1.segmentIntersection(seg2);
 
-				//int sizePrior = givenPoints.size();
-
-				// Put the point in the database so it gets a generated name
-				//givenPoints.put(intersectionPoint.getX(), intersectionPoint.getY());
-
-
 				// If an intersection point exists, then attempt to put it in the database
-				if(intersectionPoint != null )//&& isImplicit(intersectionPoint, givenPoints)) 
+				if(intersectionPoint != null )
 				{
 					implicitPoints.add(intersectionPoint);
 
@@ -53,11 +46,5 @@ public class ImplicitPointPreprocessor
 
 
 		return implicitPoints;
-	}
-
-
-	private static boolean isImplicit(Point p, PointDatabase givenPoints)
-	{
-		return givenPoints.getPoint(p) != null;
 	}
 }
