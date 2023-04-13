@@ -1,7 +1,7 @@
 //
-//		A(0, 0)			B(0, 1)			C(0, 2)
+//		A(0, 0)			C(0, 2)
 //
-//   A segment from A to C with B floating in the middle
+//   A segment from A to C
 {
   "Figure" :
   {
