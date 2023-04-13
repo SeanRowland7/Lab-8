@@ -33,6 +33,7 @@ public class ImplicitPointPreprocessor
 				Segment seg1 = givenSegments.get(seg1Index);
 				Segment seg2 = givenSegments.get(seg2Index);
 
+	
 				Point intersectionPoint = IntersectionDelegate.segmentIntersection(seg1, seg2);
 
 				//int sizePrior = givenPoints.size();

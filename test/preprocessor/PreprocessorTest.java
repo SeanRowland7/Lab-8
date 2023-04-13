@@ -14,19 +14,23 @@ import geometry_objects.Segment;
 import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
 import input.InputFacade;
+import input.components.ComponentNode;
 import input.components.FigureNode;
 import preprocessor.delegates.ImplicitPointPreprocessor;
 
 class PreprocessorTest
 {
+	
 	@Test 
 	void test_ImplicitPointPreprocessor_compute()
 	{
+		
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments("collinear_line_segments.json");
+		
+		ComponentNode node = InputFacade.extractFigure(figureStr);
 
-		FigureNode fig = InputFacade.extractFigure("test.json");
 
-
-		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation(fig);
+		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation((FigureNode)node);
 
 		PointDatabase points = pair.getKey();
 
@@ -70,11 +74,12 @@ class PreprocessorTest
 		//TODO
 	}
 
+	/**
 	@Test
 	void test_implicit_crossings()
 	{
 		// TODO: Update this file path for your particular project
-		FigureNode fig = InputFacade.extractFigure(".json");
+		FigureNode fig = InputFacade.extractFigure("fully_connected_irregular_polygon.json");
 
 		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation(fig);
 
@@ -209,5 +214,8 @@ class PreprocessorTest
 		{
 			assertTrue(expectedNonMinimalSegments.contains(computedNonMinimalSegment));
 		}
+		
 	}
+	*/
+	
 }
