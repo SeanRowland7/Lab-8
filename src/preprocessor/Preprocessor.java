@@ -1,5 +1,6 @@
 package preprocessor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -159,10 +160,26 @@ public class Preprocessor
 		
 		for (Segment seg1 : allMinimalSegments)
 		{
+			ArrayList<Segment> segmentsToAdd = new ArrayList<Segment>();
+			
+			for (Segment seg2 : allNonMinimalSegments)
+			{
+				Point pt = seg1.sharedVertex(seg2);
+				if(pt != null && seg1.coincideWithoutOverlap(seg2))
+				{
+					Point seg1Pt = seg1.other(pt);
+					Point seg2Pt = seg2.other(pt);
+					
+					segmentsToAdd.add(new Segment(seg1Pt, seg2Pt));
+				}
+			}
+			
+			allNonMinimalSegments.addAll(segmentsToAdd);
+			
 			for (Segment seg2 : allMinimalSegments)
 			{
 				Point pt = seg1.sharedVertex(seg2);
-				if(pt != null && seg1.isCollinearWith(seg2))
+				if(pt != null && seg1.coincideWithoutOverlap(seg2))
 				{
 					Point seg1Pt = seg1.other(pt);
 					Point seg2Pt = seg2.other(pt);
@@ -172,6 +189,6 @@ public class Preprocessor
 			}
 		}
 		
-		return nonMinimalSegments;
+		return allNonMinimalSegments;
 	}
 }
