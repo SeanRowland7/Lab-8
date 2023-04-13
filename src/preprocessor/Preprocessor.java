@@ -98,28 +98,28 @@ public class Preprocessor
 	{
 		Set<Segment> implicitBaseSegments = new LinkedHashSet<Segment>();
 
+		implicitBaseSegments.addAll(checkAgainstSegments(implicitBaseSegments, implicitPoints));
+		implicitBaseSegments.addAll(checkAgainstSegments(implicitBaseSegments, implicitPoints));
 		
 		return implicitBaseSegments;
 	}
 	
-	private Set<Segment> checkAgainstSegments(Set<Segment> totalList,Set<Point> points, Set<Segment> segs)
+	private Set<Segment> checkAgainstSegments(Set<Segment> totalList,Set<Point> points)
 	{
 		for (Point pt : points)
 		{
 			for (Segment seg : _givenSegments)
 			{
 				// if an implicit point lies on a segment (excluding end points)
-
-				// not sure if this is the right method, theres a lot that seem to do
-				// very similar things
 				if (SegmentDelegate.pointLiesBetweenEndpoints(seg, pt))
 				{
 					//add a new segment from each end point to the implicit point
-					implicitBaseSegments.add(new Segment(seg.getPoint1(), pt));
-					implicitBaseSegments.add(new Segment(seg.getPoint2(), pt));
+					totalList.add(new Segment(seg.getPoint1(), pt));
+					totalList.add(new Segment(seg.getPoint2(), pt));
 				}
 			}
 		}
+		return totalList;
 	}
 
 	//
@@ -151,15 +151,17 @@ public class Preprocessor
 	{
 		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
 
+		// compare all minimal segs
 		for (Segment seg1 : allMinimalSegments)
 		{
 			for (Segment seg2 : allMinimalSegments)
 			{
+				// if a seg coincides, get the first points x and the second points y and add
 				if (seg1.coincideWithoutOverlap(seg2))
 				{
-
+					Segment nonMin = new Segment(seg1.getPoint1(), seg1.getPoint2());
+					nonMinimalSegments.add(nonMin);
 				}
-
 			}
 		}
 
