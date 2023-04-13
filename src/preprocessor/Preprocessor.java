@@ -155,7 +155,23 @@ public class Preprocessor
 	//
 	public Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
 	{
-		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
+		Set<Segment> allNonMinimalSegments = new HashSet<Segment>();
+		
+		for (Segment seg1 : allMinimalSegments)
+		{
+			for (Segment seg2 : allMinimalSegments)
+			{
+				Point pt = seg1.sharedVertex(seg2);
+				if(pt != null && seg1.isCollinearWith(seg2))
+				{
+					Point seg1Pt = seg1.other(pt);
+					Point seg2Pt = seg2.other(pt);
+					
+					allNonMinimalSegments.add(new Segment(seg1Pt, seg2Pt));
+				}
+			}
+		}
+		
 		return nonMinimalSegments;
 	}
 }
