@@ -109,10 +109,14 @@ public class Preprocessor
 			for (Segment seg : _givenSegments)
 			{
 				// if an implicit point lies on a segment (excluding end points)
+<<<<<<< Updated upstream
 
 				// not sure if this is the right method, theres a lot that seem to do
 				// very similar things
 				if (SegmentDelegate.pointLiesBetweenEndpoints(seg, pt))
+=======
+				if (seg.pointLiesBetweenEndpoints(pt))
+>>>>>>> Stashed changes
 				{
 					//add a new segment from each end point to the implicit point
 					implicitBaseSegments.add(new Segment(seg.getPoint1(), pt));
