@@ -2,6 +2,9 @@ package geometry_objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 import geometry_objects.points.Point;
@@ -15,11 +18,12 @@ class SegmentTest {
 		 *   A-------B-------C------D     E
 		 * 
 		 */
+		
 		Point ptA = new Point("A", 0,0);
-		Point ptB = new Point("B", 0,1);
-		Point ptC = new Point("C", 0,2);
-		Point ptD = new Point("D", 0,3);
-		Point ptE = new Point("E", 0,4);
+		Point ptB = new Point("B", 1,0);
+		Point ptC = new Point("C", 2,0);
+		Point ptD = new Point("D", 3,0);
+		Point ptE = new Point("E", 4,0);
 
 		Segment segAD = new Segment(ptA, ptD);
 		Segment segAB = new Segment(ptA, ptB);
@@ -31,6 +35,7 @@ class SegmentTest {
 		assertTrue(segAD.HasSubSegment(segBC));
 
 		assertFalse(segAD.HasSubSegment(segAE));
+		assertFalse(segAD.HasSubSegment(null));
 
 		/**
 		 *   A-------B-------C------D------E
@@ -52,12 +57,15 @@ class SegmentTest {
 		 */
 
 		Point ptA = new Point("A", 0,0);
-		Point ptB = new Point("B", 0,1);
-		Point ptC = new Point("C", 0,3);
-		Point ptD = new Point("D", 0,4);
+		Point ptB = new Point("B", 1,0);
+		Point ptC = new Point("C", 3,0);
+		Point ptD = new Point("D", 4,0);
 
 		Segment segAB = new Segment(ptA, ptB);
 		Segment segCD = new Segment(ptC, ptD);
+		
+		assertFalse(segAB.coincideWithoutOverlap(null));
+		assertFalse(segCD.coincideWithoutOverlap(null));
 
 		assertTrue(segAB.coincideWithoutOverlap(segCD));
 		assertTrue(segCD.coincideWithoutOverlap(segAB));
@@ -73,8 +81,8 @@ class SegmentTest {
 		 */
 
 		Point ptA = new Point("A", 0,0);
-		Point ptB = new Point("B", 0,1);
-		Point ptC = new Point("C", 0,2);
+		Point ptB = new Point("B", 1,0);
+		Point ptC = new Point("C", 2,0);
 
 		Segment segAB = new Segment(ptA, ptB);
 		Segment segBC = new Segment(ptB, ptC);
@@ -86,15 +94,22 @@ class SegmentTest {
 	@Test
 	void testCoincideWithoutOverlapOverlap() 
 	{
-
-
-
 		/**
 		 *			  this 
 		 *   |----------|=-=-=-=-=-|   
 		 *   A          B          C
 		 *   				that
 		 */
+		
+		Point ptA = new Point("A", 22/54, 0);
+		Point ptB = new Point("B", 31/32, 0);
+		Point ptC = new Point("C", 59/32, 0);
+		
+		Segment segAC = new Segment(ptA, ptC);
+		Segment segBC = new Segment(ptB, ptC);
+		
+		assertFalse(segAC.coincideWithoutOverlap(segBC));
+		assertFalse(segBC.coincideWithoutOverlap(segAC));
 	}
 
 	@Test
@@ -109,14 +124,17 @@ class SegmentTest {
 		 *     |===========|
 		 *     C           D
 		 */
+		
+		Point ptA = new Point("A", 0, 0);
+		Point ptB = new Point("B", 0, 10);
+		Point ptC = new Point("C", -2, 2);
+		Point ptD = new Point("C", -2, 8);
+		
+		Segment segAB = new Segment(ptA, ptB);
+		Segment segCD = new Segment(ptC, ptD);
 
-
-
-		/**
-        		this    B    that
-		 *   |----------|==========|   
-		 *   A          B          C
-		 */
+		assertFalse(segAB.coincideWithoutOverlap(segCD));
+		assertFalse(segCD.coincideWithoutOverlap(segAB));	
 	}
 
 
@@ -132,6 +150,24 @@ class SegmentTest {
 		 *      * Z
 		 *      
 		 */
+		
+		Set<Point> points = new HashSet<Point>();
+		Set<Point> answer = new HashSet<Point>();
+
+		
+		Point ptA = new Point("A", 0,0); 	points.add(ptA);	answer.add(ptA);
+		Point ptB = new Point("B", 1,0); 	points.add(ptB);	answer.add(ptB);
+		Point ptC = new Point("C", 2,0); 	points.add(ptC);	answer.add(ptC);
+		Point ptD = new Point("D", 3,0); 	points.add(ptD); 	answer.add(ptD);
+		
+		Point ptE = new Point("E", 4,0); 	points.add(ptE);
+		Point ptQ = new Point("Q", 2,1); 	points.add(ptQ);
+		Point ptZ = new Point("Z", -1,-1); 	points.add(ptZ);
+		
+		Segment segAD = new Segment(ptA, ptD);
+		assertEquals(answer, segAD.collectOrderedPointsOnSegment(points));
+		
+		assertNull(segAD.collectOrderedPointsOnSegment(null));
 	}
 
 }

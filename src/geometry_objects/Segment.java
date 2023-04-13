@@ -169,8 +169,7 @@ public class Segment extends GeometricObject
 		return pointLiesBetweenEndpoints(that.getPoint1()) ||
 			   pointLiesBetweenEndpoints(that.getPoint2()) ||
 			   that.pointLiesBetweenEndpoints(getPoint1()) ||
-			   that.pointLiesBetweenEndpoints(getPoint2());
-				
+			   that.pointLiesBetweenEndpoints(getPoint2());	
 	}
 	
 	/**
@@ -198,8 +197,6 @@ public class Segment extends GeometricObject
 		{
 			if(pointLiesOnSegment(p)) pointsOn.add(p);
 		}
-        
-
 		return pointsOn;
 	}
 	

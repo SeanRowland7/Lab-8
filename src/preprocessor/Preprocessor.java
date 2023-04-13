@@ -4,18 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
 import preprocessor.delegates.ImplicitPointPreprocessor;
 import geometry_objects.Segment;
-import geometry_objects.delegates.SegmentDelegate;
-import geometry_objects.delegates.intersections.IntersectionDelegate;
 
 public class Preprocessor
 {
@@ -100,24 +96,30 @@ public class Preprocessor
 	{
 		Set<Segment> implicitBaseSegments = new LinkedHashSet<Segment>();
 
+		// for each given segment
 		for (Segment seg : _givenSegments)
 		{
-			SortedSet<Point> ptList = new TreeSet<Point>();
+			Set<Point> ptList = new TreeSet<Point>();
 
-			Point left = seg.getPoint1(); 
-			Point right = seg.getPoint2();
+			// add the segments endpoints to a point list
+			ptList.add(seg.getPoint1());
+			ptList.add(seg.getPoint2());
 
-			ptList.add(left);
+			// add all implicit points that lie on the segment to a point list
 			ptList.addAll(seg.collectOrderedPointsOnSegment(implicitPoints));
-			ptList.add(right);
 
+			// convert the point list to an array
 			Point[] ptArr = ptList.toArray(new Point[ptList.size()]);
 
+			// attempt to connect each point to the one in front of it
 			for (int x = 0; x < ptArr.length - 1; x++)
 			{
 				Segment newSeg = new Segment(ptArr[x], ptArr[x+1]);
-				if(!_givenSegments.contains(newSeg))
-					implicitBaseSegments.add(newSeg);
+
+				// if the newSeg isnt a given segment
+				// -> add
+
+				if(!_givenSegments.contains(newSeg)) implicitBaseSegments.add(newSeg);
 			}
 		}
 		return implicitBaseSegments;
@@ -134,15 +136,19 @@ public class Preprocessor
 	{
 		Set<Segment> allMinimalSegments = new HashSet<Segment>();
 
+		// add all implicit and given segments
 		allMinimalSegments.addAll(implicitSegments);
 		allMinimalSegments.addAll(givenSegments);
 
 
-		// remove a seg from givenSeg if an implicit pt is on it (not end pt)
+		// compare each seg to each point
 		for (Segment seg : givenSegments)
 		{
 			for (Point pt : implicitPoints)
 			{
+				// remove the segment if an implicit point lies on it
+				// -> remove
+
 				if (seg.pointLiesBetweenEndpoints(pt)) allMinimalSegments.remove(seg);
 			}	
 		}
@@ -157,38 +163,46 @@ public class Preprocessor
 	public Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
 	{
 		Set<Segment> allNonMinimalSegments = new HashSet<Segment>();
-		
+
+
 		for (Segment seg1 : allMinimalSegments)
 		{
 			ArrayList<Segment> segmentsToAdd = new ArrayList<Segment>();
-			
+
+			// compare minimal to nonMinimal
 			for (Segment seg2 : allNonMinimalSegments)
 			{
+				//if two segments share a vertex and coincideWithoutOverlap 
+				// -> create a new segment that combines seg1 and seg2
 				Point pt = seg1.sharedVertex(seg2);
 				if(pt != null && seg1.coincideWithoutOverlap(seg2))
 				{
 					Point seg1Pt = seg1.other(pt);
 					Point seg2Pt = seg2.other(pt);
-					
+
 					segmentsToAdd.add(new Segment(seg1Pt, seg2Pt));
 				}
 			}
-			
+
+
 			allNonMinimalSegments.addAll(segmentsToAdd);
-			
+
+			// compare minimal to allMinimal
 			for (Segment seg2 : allMinimalSegments)
 			{
+				//if two segments share a vertex and coincideWithoutOverlap 
+				// -> create a new segment that combines seg1 and seg2
 				Point pt = seg1.sharedVertex(seg2);
 				if(pt != null && seg1.coincideWithoutOverlap(seg2))
 				{
 					Point seg1Pt = seg1.other(pt);
 					Point seg2Pt = seg2.other(pt);
-					
+
 					allNonMinimalSegments.add(new Segment(seg1Pt, seg2Pt));
 				}
 			}
 		}
-		
+
 		return allNonMinimalSegments;
 	}
 }
