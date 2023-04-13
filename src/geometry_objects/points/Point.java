@@ -106,7 +106,12 @@ public class Point implements Comparable<Point>
 	{
 		if(!(obj instanceof Point)) return false;
 		
-        return compareTo((Point)obj) == 0;
+        Point other = (Point) obj;
+        
+        return MathUtilities.doubleEquals(this.getX(),  other.getX()) &&
+        		MathUtilities.doubleEquals(this.getY(),  other.getY());
+        		
+        		
 	}
 	
 	public String toString()

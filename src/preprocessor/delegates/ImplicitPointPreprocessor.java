@@ -43,7 +43,7 @@ public class ImplicitPointPreprocessor
 
 
 				// If an intersection point exists, then attempt to put it in the database
-				if(intersectionPoint != null && isImplicit(intersectionPoint, givenPoints)) 
+				if(intersectionPoint != null )//&& isImplicit(intersectionPoint, givenPoints)) 
 				{
 					implicitPoints.add(intersectionPoint);
 
