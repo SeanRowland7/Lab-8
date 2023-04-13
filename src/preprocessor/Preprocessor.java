@@ -50,9 +50,9 @@ public class Preprocessor
 	{
 		_pointDatabase  = points;
 		_givenSegments = segments;
-		
+
 		_segmentDatabase = new HashMap<Segment, Segment>();
-		
+
 		analyze();
 	}
 
@@ -98,12 +98,18 @@ public class Preprocessor
 	{
 		Set<Segment> implicitBaseSegments = new LinkedHashSet<Segment>();
 
-		for (Point pt : implicitPoints)
+		
+		return implicitBaseSegments;
+	}
+	
+	private Set<Segment> checkAgainstSegments(Set<Segment> totalList,Set<Point> points, Set<Segment> segs)
+	{
+		for (Point pt : points)
 		{
 			for (Segment seg : _givenSegments)
 			{
 				// if an implicit point lies on a segment (excluding end points)
-				
+
 				// not sure if this is the right method, theres a lot that seem to do
 				// very similar things
 				if (SegmentDelegate.pointLiesBetweenEndpoints(seg, pt))
@@ -114,9 +120,8 @@ public class Preprocessor
 				}
 			}
 		}
-		return implicitBaseSegments;
 	}
-	
+
 	//
 	// Combine the given minimal segments and implicit segments into a true set of minimal segments
 	//     * givenSegments may not be minimal
@@ -126,29 +131,38 @@ public class Preprocessor
 			Set<Segment> _implicitSegments) 
 	{
 		Set<Segment> allMinimalSegments = new HashSet<Segment>();
-		
-		for (Segment seg : _givenSegments)
-		{
-			if (!Segment.HasSubSegment(seg)) allMinimalSegments.add(seg);
-		}
-		
-		for (Segment seg : _implicitSegments)
-		{
-			if (!Segment.HasSubSegment(seg)) allMinimalSegments.add(seg);
-		}
-		
+
+		Set<Segment> everything = new HashSet<Segment>();
+		everything.addAll(_implicitSegments);
+		everything.addAll(_givenSegments);
+
+		for (Segment seg1 : _givenSegments)
+			for (Segment seg2 : everything)
+				if (!seg1.HasSubSegment(seg2)) allMinimalSegments.add(seg1);
+
+		for (Segment seg1 : _implicitSegments)
+			for (Segment seg2 : everything)
+				if (!seg1.HasSubSegment(seg2)) allMinimalSegments.add(seg1);
+
 		return allMinimalSegments;
 	}
-	
+
 	private Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
 	{
 		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
-		
-		for (Segment seg : allMinimalSegments)
+
+		for (Segment seg1 : allMinimalSegments)
 		{
-			if (!Segment.HasSubSegment(seg)) nonMinimalSegments.add(seg);
+			for (Segment seg2 : allMinimalSegments)
+			{
+				if (seg1.coincideWithoutOverlap(seg2))
+				{
+
+				}
+
+			}
 		}
-		
+
 		return nonMinimalSegments;
 	}
 }
