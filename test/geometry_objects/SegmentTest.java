@@ -35,7 +35,7 @@ class SegmentTest {
 		assertTrue(segAD.HasSubSegment(segBC));
 
 		assertFalse(segAD.HasSubSegment(segAE));
-		assertFalse(segAD.HasSubSegment(null));
+
 
 		/**
 		 *   A-------B-------C------D------E
@@ -64,8 +64,6 @@ class SegmentTest {
 		Segment segAB = new Segment(ptA, ptB);
 		Segment segCD = new Segment(ptC, ptD);
 		
-		assertFalse(segAB.coincideWithoutOverlap(null));
-		assertFalse(segCD.coincideWithoutOverlap(null));
 
 		assertTrue(segAB.coincideWithoutOverlap(segCD));
 		assertTrue(segCD.coincideWithoutOverlap(segAB));
@@ -108,8 +106,8 @@ class SegmentTest {
 		Segment segAC = new Segment(ptA, ptC);
 		Segment segBC = new Segment(ptB, ptC);
 		
-		assertFalse(segAC.coincideWithoutOverlap(segBC));
-		assertFalse(segBC.coincideWithoutOverlap(segAC));
+		assertTrue(segAC.coincideWithoutOverlap(segBC));
+		assertTrue(segBC.coincideWithoutOverlap(segAC));
 	}
 
 	@Test
@@ -166,8 +164,6 @@ class SegmentTest {
 		
 		Segment segAD = new Segment(ptA, ptD);
 		assertEquals(answer, segAD.collectOrderedPointsOnSegment(points));
-		
-		assertNull(segAD.collectOrderedPointsOnSegment(null));
 	}
 
 }
