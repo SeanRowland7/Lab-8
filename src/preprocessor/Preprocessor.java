@@ -1,6 +1,5 @@
 package preprocessor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -215,54 +214,4 @@ public class Preprocessor
 		
 		return nonMinimalSegments;
 	}
-	/**
-
-	//
-	// Construct all segments inductively from the base segments
-	//
-	public Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
-	{
-		Set<Segment> allNonMinimalSegments = new HashSet<Segment>();
-
-
-		for (Segment seg1 : allMinimalSegments)
-		{
-			ArrayList<Segment> segmentsToAdd = new ArrayList<Segment>();
-
-			// compare minimal to nonMinimal
-			for (Segment seg2 : allNonMinimalSegments)
-			{
-				//if two segments share a vertex and coincideWithoutOverlap 
-				// -> create a new segment that combines seg1 and seg2
-				Point pt = seg1.sharedVertex(seg2);
-				if(pt != null && seg1.coincideWithoutOverlap(seg2))
-				{
-					Point seg1Pt = seg1.other(pt);
-					Point seg2Pt = seg2.other(pt);
-
-					segmentsToAdd.add(new Segment(seg1Pt, seg2Pt));
-				}
-			}
-			allNonMinimalSegments.addAll(segmentsToAdd);
-
-			// compare minimal to allMinimal
-			for (Segment seg2 : allMinimalSegments)
-			{
-				//if two segments share a vertex and coincideWithoutOverlap 
-				// -> create a new segment that combines seg1 and seg2
-				Point pt = seg1.sharedVertex(seg2);
-				if(pt != null && seg1.coincideWithoutOverlap(seg2))
-				{
-					Point seg1Pt = seg1.other(pt);
-					Point seg2Pt = seg2.other(pt);
-
-					allNonMinimalSegments.add(new Segment(seg1Pt, seg2Pt));
-				}
-			}
-		}
-
-		return allNonMinimalSegments;
-	}
-	
-	*/
 }
