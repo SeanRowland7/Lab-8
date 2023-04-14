@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -156,6 +158,64 @@ public class Preprocessor
 		return allMinimalSegments;
 	}
 
+	
+	public Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) 
+	{
+		Set<Segment> allNonMinimalSegments = new HashSet<Segment>();
+
+		for (Segment seg1 : allMinimalSegments)
+		{
+			HashSet<Segment> collinearMinimalSegments = getCollinearMinimalSegments(seg1, allMinimalSegments);
+			allNonMinimalSegments.addAll(getNonMinimalSegments(collinearMinimalSegments));
+		}
+		
+		return allNonMinimalSegments;
+	}
+
+	private HashSet<Segment> getCollinearMinimalSegments(Segment seg1, Set<Segment> allMinimalSegments) 
+	{
+		HashSet<Segment> collinearMinimalSegments = new HashSet<Segment>();
+		
+		for(Segment seg2 : allMinimalSegments)
+		{
+			if(seg1.coincideWithoutOverlap(seg2))
+			{
+				collinearMinimalSegments.add(seg2);
+			}
+		}
+		
+		return collinearMinimalSegments;
+	}
+
+	private Set<Segment> getNonMinimalSegments(Set<Segment> collinearMinimalSegments) 
+	{
+		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
+		
+		Queue<Segment> segsToProcess = new LinkedList<Segment>(collinearMinimalSegments);
+		
+		while(!segsToProcess.isEmpty())
+		{
+			Segment seg1 = segsToProcess.remove();
+			
+			for(Segment seg2 : collinearMinimalSegments)
+			{
+				Point pt = seg1.sharedVertex(seg2);
+				if(pt != null && seg1.coincideWithoutOverlap(seg2))
+				{
+					Segment constructedSeg = new Segment(seg1.other(pt), seg2.other(pt));
+					
+					if(!nonMinimalSegments.contains(constructedSeg) && !collinearMinimalSegments.contains(constructedSeg) )
+					{
+						nonMinimalSegments.add(constructedSeg);
+						segsToProcess.add(constructedSeg);
+					}
+				}
+			}
+		}
+		
+		return nonMinimalSegments;
+	}
+	/**
 
 	//
 	// Construct all segments inductively from the base segments
@@ -183,8 +243,6 @@ public class Preprocessor
 					segmentsToAdd.add(new Segment(seg1Pt, seg2Pt));
 				}
 			}
-
-
 			allNonMinimalSegments.addAll(segmentsToAdd);
 
 			// compare minimal to allMinimal
@@ -205,4 +263,6 @@ public class Preprocessor
 
 		return allNonMinimalSegments;
 	}
+	
+	*/
 }
