@@ -14,6 +14,14 @@ import geometry_objects.points.PointDatabase;
 import preprocessor.delegates.ImplicitPointPreprocessor;
 import geometry_objects.Segment;
 
+/**
+* A preprocessor class that provides various computations for geometry figures.
+*
+* <p>Bugs: None
+*
+* @author Sean Rowland, Caden Parry
+* @date 14 April 2023
+*/
 public class Preprocessor
 {
 	// The explicit points provided to us by the user.
@@ -148,8 +156,6 @@ public class Preprocessor
 			for (Point pt : implicitPoints)
 			{
 				// remove the segment if an implicit point lies on it
-				// -> remove
-
 				if (seg.pointLiesBetweenEndpoints(pt)) allMinimalSegments.remove(seg);
 			}	
 		}
@@ -162,9 +168,13 @@ public class Preprocessor
 	{
 		Set<Segment> allNonMinimalSegments = new HashSet<Segment>();
 
+		// For each minimal segment, find all the non-minimal segments that that segment is apart of.
 		for (Segment seg1 : allMinimalSegments)
 		{
+			// Get all the minimal segments that are collinear to seg1.
 			HashSet<Segment> collinearMinimalSegments = getCollinearMinimalSegments(seg1, allMinimalSegments);
+			
+			// Calculate all the non-minimal segments that can be constructed from the set of collinear minimal segments.
 			allNonMinimalSegments.addAll(getNonMinimalSegments(collinearMinimalSegments));
 		}
 		
@@ -175,6 +185,7 @@ public class Preprocessor
 	{
 		HashSet<Segment> collinearMinimalSegments = new HashSet<Segment>();
 		
+		// Compare every other segment to seg1 and add it to the set if it is collinear.
 		for(Segment seg2 : allMinimalSegments)
 		{
 			if(seg1.coincideWithoutOverlap(seg2))
@@ -190,22 +201,34 @@ public class Preprocessor
 	{
 		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
 		
+		// Create a queue of segments to process that begins with the set of collinear minimal segments.
 		Queue<Segment> segsToProcess = new LinkedList<Segment>(collinearMinimalSegments);
 		
+		// As long as there are segments to process...
 		while(!segsToProcess.isEmpty())
 		{
+			// Get the next segment to be processed.
 			Segment seg1 = segsToProcess.remove();
 			
+			// Go through all the collinear minimal segments and see if a new segment can be constructed.
 			for(Segment seg2 : collinearMinimalSegments)
 			{
 				Point pt = seg1.sharedVertex(seg2);
+				
+				// Check whether the two segments share a vertex and coincide without overlapping.
 				if(pt != null && seg1.coincideWithoutOverlap(seg2))
 				{
+					// If they do then construct a segment with each non-shared endpoint between the two segments.
 					Segment constructedSeg = new Segment(seg1.other(pt), seg2.other(pt));
 					
+					// If the constructed segment is new and not minimal, then we found a new nonminimal segment.
 					if(!nonMinimalSegments.contains(constructedSeg) && !collinearMinimalSegments.contains(constructedSeg) )
 					{
+						
 						nonMinimalSegments.add(constructedSeg);
+						
+						// Add the new nonminimal segment back onto the queue 
+						//  to check if it combines with other minimal segments to form nonminimal segments.
 						segsToProcess.add(constructedSeg);
 					}
 				}

@@ -11,6 +11,14 @@ import geometry_objects.points.Point;
 import utilities.math.MathUtilities;
 import utilities.math.analytic_geometry.GeometryUtilities;
 
+/**
+* A geometry representation of a segment.
+*
+* <p>Bugs: None
+*
+* @author Sean Rowland, Caden Parry
+* @date 14 April 2023
+*/
 public class Segment extends GeometricObject
 {
 	protected Point _point1;

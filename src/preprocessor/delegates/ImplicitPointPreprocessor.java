@@ -59,6 +59,9 @@ public class ImplicitPointPreprocessor
 				}
 			}
 		}
+		// Update the original PointDatabase to include all implicit points.
+		givenPoints = allPoints;
+		
 		return implicitPoints;
 	}
 }
