@@ -1,0 +1,61 @@
+//    	E    G
+//	|    |
+//   A--|----|--B
+//   C--|----|--D
+//	|    |
+//	F    H
+
+{
+  "Figure": {
+    "Description": "A sequence of collinear line segments mimicking one line with 6 points.",
+    "Points": [
+      {
+        "name": "A",
+        "x": 0,
+        "y": 1
+      },
+      {
+        "name": "B",
+        "x": 5,
+        "y": 1
+      },
+      {
+        "name": "C",
+        "x": 0,
+        "y": -1
+      },
+      {
+        "name": "D",
+        "x": 5,
+        "y": -1
+      },
+      {
+        "name": "E",
+        "x": 2,
+        "y": 2
+      },
+      {
+        "name": "F",
+        "x": 2,
+        "y": -2
+      },
+      {
+        "name": "G",
+        "x": 4,
+        "y": 2
+      },
+      {
+        "name": "H",
+        "x": 4,
+        "y": -2
+      }
+    ],
+
+    "Segments": [
+      { "A": ["B"] },
+      { "C": ["D"] },
+      { "E": ["F"] },
+      { "G": ["H"] }
+    ]
+  }
+}
