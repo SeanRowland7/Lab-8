@@ -108,6 +108,134 @@ class PreprocessorTest
 	}
 
 	@Test
+	void test_tic_tac_toe()
+	{
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments("tic_tac_toe.json");
+
+		ComponentNode node = InputFacade.extractFigure(figureStr);
+
+		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation((FigureNode) node);
+
+		PointDatabase points = pair.getKey();
+
+		Set<Segment> segments = pair.getValue();
+
+		Preprocessor pp = new Preprocessor(points, segments);
+
+		// 5 new implied points inside the pentagon
+		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
+		assertEquals(4, iPoints.size());
+
+
+		//    	E    G
+		//		|    |
+		//   A-a*----b*--B
+		//		|	 |
+		//   C-c*---d*--D
+		//		|    |
+		//		F    H
+
+		Point a_star = new Point(2, 1);
+		Point b_star = new Point(4, 1);
+		Point c_star = new Point(2, -1);
+		Point d_star = new Point(4, -1);
+
+		assertTrue(iPoints.contains(a_star));
+		assertTrue(iPoints.contains(b_star));
+		assertTrue(iPoints.contains(c_star));
+		assertTrue(iPoints.contains(d_star));
+
+		//
+		// There are 15 implied segments inside the pentagon; see figure above
+		//
+		Set<Segment> iSegments = pp.computeImplicitBaseSegments(iPoints);
+		assertEquals(12, iSegments.size());
+
+		List<Segment> expectedISegments = new ArrayList<Segment>();
+
+		expectedISegments.add(new Segment(points.getPoint("A"), a_star));
+		expectedISegments.add(new Segment(points.getPoint("B"), b_star));
+		expectedISegments.add(new Segment(points.getPoint("C"), c_star));
+		expectedISegments.add(new Segment(points.getPoint("D"), d_star));
+		expectedISegments.add(new Segment(points.getPoint("E"), a_star));
+		expectedISegments.add(new Segment(points.getPoint("F"), c_star));
+		expectedISegments.add(new Segment(points.getPoint("G"), b_star));
+		expectedISegments.add(new Segment(points.getPoint("H"), d_star));
+		
+		expectedISegments.add(new Segment(a_star, b_star));
+		expectedISegments.add(new Segment(a_star, c_star));
+		
+		expectedISegments.add(new Segment(b_star, d_star));
+		
+		expectedISegments.add(new Segment(d_star, c_star));
+
+
+		for (Segment iSegment : iSegments)
+		{
+			assertTrue(expectedISegments.contains(iSegment));
+		}
+
+		//
+		// Ensure we have ALL minimal segments: 20 in this figure.
+		//
+		List<Segment> expectedMinimalSegments = new ArrayList<Segment>(iSegments);
+		
+
+		Set<Segment> minimalSegments = pp.identifyAllMinimalSegments(iPoints, segments, iSegments);
+		assertEquals(expectedMinimalSegments.size(), minimalSegments.size());
+
+		for (Segment minimalSeg : minimalSegments)
+		{
+			assertTrue(expectedMinimalSegments.contains(minimalSeg));
+		}
+
+		//
+		// Construct ALL figure segments from the base segments
+		//
+		Set<Segment> computedNonMinimalSegments = pp.constructAllNonMinimalSegments(minimalSegments);
+		
+		
+
+		//
+		// All Segments will consist of the new 15 non-minimal segments.
+		//
+		
+		assertEquals(12, computedNonMinimalSegments.size());
+
+		//
+		// Ensure we have ALL minimal segments: 20 in this figure.
+		//
+		List<Segment> expectedNonMinimalSegments = new ArrayList<Segment>();
+		
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("A"), b_star));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("A"), points.getPoint("B")));
+		expectedNonMinimalSegments.add(new Segment(a_star, points.getPoint("B")));
+		
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("C"), d_star));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("C"), points.getPoint("D")));
+		expectedNonMinimalSegments.add(new Segment(c_star, points.getPoint("D")));
+		
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("E"), c_star));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("E"), points.getPoint("F")));
+		expectedNonMinimalSegments.add(new Segment(a_star, points.getPoint("F")));
+		
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("G"), d_star));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("G"), points.getPoint("H")));
+		expectedNonMinimalSegments.add(new Segment(b_star, points.getPoint("H")));
+
+
+		//
+		// Check size and content equality
+		//
+		assertEquals(expectedNonMinimalSegments.size(), computedNonMinimalSegments.size());
+
+		for (Segment computedNonMinimalSegment : computedNonMinimalSegments)
+		{
+			assertTrue(expectedNonMinimalSegments.contains(computedNonMinimalSegment));
+		}
+	}
+
+	@Test
 	void collinear_line_segments_test()
 	{
 		String figureStr = utilities.io.FileUtilities.readFileFilterComments("collinear_line_segments.json");
