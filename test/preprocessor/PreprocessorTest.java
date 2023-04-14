@@ -21,7 +21,7 @@ import preprocessor.delegates.ImplicitPointPreprocessor;
 class PreprocessorTest
 {
 	@Test
-	void test_Sean()
+	void crossing_symmetric_triangle_test()
 	{
 		//	     A                                 
 		//      / \                                
@@ -32,7 +32,7 @@ class PreprocessorTest
 		//
 		// There are 4 implied segments inside the figure above
 		//
-		
+
 		String figureStr = utilities.io.FileUtilities.readFileFilterComments("crossing_symmetric_triangle.json");
 
 		ComponentNode node = InputFacade.extractFigure(figureStr);
@@ -47,9 +47,9 @@ class PreprocessorTest
 
 		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
 		assertEquals(1, iPoints.size());
-		
+
 		Point x_star = new Point(3, 3);
-	
+
 
 		assertTrue(iPoints.contains(x_star));
 
@@ -68,7 +68,7 @@ class PreprocessorTest
 			assertTrue(expectedISegments.contains(iSegment));
 		}
 
-		
+
 
 		Set<Segment> minimalSegments = pp.identifyAllMinimalSegments(iPoints, segments, iSegments);
 		assertEquals(10, minimalSegments.size());
@@ -84,14 +84,14 @@ class PreprocessorTest
 		expectedISegments.add(new Segment(points.getPoint("C"), x_star));
 		expectedISegments.add(new Segment(points.getPoint("D"), x_star));
 		expectedISegments.add(new Segment(points.getPoint("E"), x_star));
-		
+
 		//
 		// Construct ALL figure segments from the base segments
 		//
 		Set<Segment> computedNonMinimalSegments = pp.constructAllNonMinimalSegments(minimalSegments);
 
-		
-		
+
+
 		//
 		// All Segments will consist of the new 15 non-minimal segments.
 		//
@@ -100,7 +100,7 @@ class PreprocessorTest
 		//
 		// Ensure we have ALL minimal segments: 20 in this figure.
 		//
-		
+
 		//
 		// Check size and content equality
 		//
@@ -108,7 +108,7 @@ class PreprocessorTest
 	}
 
 	@Test
-	void test_Caden()
+	void collinear_line_segments_test()
 	{
 		String figureStr = utilities.io.FileUtilities.readFileFilterComments("collinear_line_segments.json");
 
@@ -126,35 +126,36 @@ class PreprocessorTest
 		assertEquals(0, iPoints.size());
 
 
-		//
-		//
-		//		               D(3, 7)
-		//
-		//
-		//   E(-2,4)       D*      E*
-		//		         C*          A*       C(6, 3)
-		//                      B*
-		//		       A(2,0)        B(4, 0)
-		//
-		//		    An irregular pentagon with 5 C 2 = 10 segments
+		//	    A----B-----C--D-----E----------F
 
-		
 
-		//
-		// There are 15 implied segments inside the pentagon; see figure above
-		//
+		// There are 0 implied segments 
+
 		Set<Segment> iSegments = pp.computeImplicitBaseSegments(iPoints);
 		assertEquals(0, iSegments.size());
 
-
-
-		
-		
+		// there are five 5 minimal segments 
 
 		Set<Segment> minimalSegments = pp.identifyAllMinimalSegments(iPoints, segments, iSegments);
 		assertEquals(5, minimalSegments.size());
 
-		
+		List<Segment> expectedMinimalSegments = new ArrayList<Segment>(iSegments);
+		expectedMinimalSegments.add(new Segment(points.getPoint("A"), points.getPoint("B")));
+		expectedMinimalSegments.add(new Segment(points.getPoint("B"), points.getPoint("C")));
+		expectedMinimalSegments.add(new Segment(points.getPoint("C"), points.getPoint("D")));
+		expectedMinimalSegments.add(new Segment(points.getPoint("D"), points.getPoint("E")));
+		expectedMinimalSegments.add(new Segment(points.getPoint("E"), points.getPoint("F")));
+		assertEquals(expectedMinimalSegments.size(), minimalSegments.size());
+
+		//
+		// Ensure we have ALL minimal segments: 5 in this figure.
+		//
+
+		for (Segment minimalSeg : minimalSegments)
+		{
+			assertTrue(expectedMinimalSegments.contains(minimalSeg));
+		}
+
 		//
 		// Construct ALL figure segments from the base segments
 		//
@@ -168,11 +169,31 @@ class PreprocessorTest
 		//
 		// Ensure we have ALL minimal segments: 20 in this figure.
 		//
-		
+		List<Segment> expectedNonMinimalSegments = new ArrayList<Segment>();
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("A"), points.getPoint("C")));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("A"), points.getPoint("D")));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("A"), points.getPoint("E")));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("A"), points.getPoint("F")));
+
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("B"), points.getPoint("D")));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("B"), points.getPoint("E")));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("B"), points.getPoint("F")));
+
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("C"), points.getPoint("E")));
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("C"), points.getPoint("F")));
+
+		expectedNonMinimalSegments.add(new Segment(points.getPoint("D"), points.getPoint("F")));
+
+
 		//
 		// Check size and content equality
 		//
-		assertEquals(10, computedNonMinimalSegments.size());
+		assertEquals(expectedNonMinimalSegments.size(), computedNonMinimalSegments.size());
+
+		for (Segment computedNonMinimalSegment : computedNonMinimalSegments)
+		{
+			assertTrue(expectedNonMinimalSegments.contains(computedNonMinimalSegment));
+		}
 	}
 
 	@Test
