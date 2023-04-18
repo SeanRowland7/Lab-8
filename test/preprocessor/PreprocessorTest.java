@@ -43,11 +43,11 @@ class PreprocessorTest
 
 		Set<Segment> segments = pair.getValue();
 
-		Preprocessor pp = new Preprocessor(points, segments);
-
 		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
 		assertEquals(1, iPoints.size());
 
+		Preprocessor pp = new Preprocessor(points, segments);
+		
 		Point x_star = new Point(3, 3);
 
 
@@ -120,13 +120,12 @@ class PreprocessorTest
 
 		Set<Segment> segments = pair.getValue();
 
-		Preprocessor pp = new Preprocessor(points, segments);
-
 		// 5 new implied points inside the pentagon
 		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
 		assertEquals(4, iPoints.size());
 
-
+		Preprocessor pp = new Preprocessor(points, segments);
+		
 		//    	E    G
 		//		|    |
 		//   A-a*----b*--B
@@ -337,13 +336,12 @@ class PreprocessorTest
 
 		Set<Segment> segments = pair.getValue();
 
-		Preprocessor pp = new Preprocessor(points, segments);
-
 		// 5 new implied points inside the pentagon
 		Set<Point> iPoints = ImplicitPointPreprocessor.compute(points, new ArrayList<Segment>(segments));
 		assertEquals(5, iPoints.size());
 
 
+		Preprocessor pp = new Preprocessor(points, segments);
 		//
 		//
 		//		               D(3, 7)

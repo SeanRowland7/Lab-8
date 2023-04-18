@@ -34,9 +34,6 @@ public class ImplicitPointPreprocessor
 	{
 		Set<Point> implicitPoints = new LinkedHashSet<Point>();
 
-		// A PointDatabase containing both given and implicit points to prevent duplicates and facilitate naming.
-		PointDatabase allPoints = new PointDatabase(new ArrayList<Point>(givenPoints.getPoints()));
-		
 		// Compare each segment to all other segments
 		for(int seg1Index = 0; seg1Index < givenSegments.size() - 1; seg1Index++)
 		{
@@ -48,23 +45,21 @@ public class ImplicitPointPreprocessor
 
 				Point intersectionPoint = seg1.segmentIntersection(seg2);
 
-				// If a new intersection point exists then put it in the database.
-				
-				//if valid, put
-				if(intersectionPoint != null && allPoints.getPoint(intersectionPoint) == null) 
+				// If a new intersection point exists
+				// -> put it in the database
+				if(intersectionPoint != null && givenPoints.getPoint(intersectionPoint) == null) 
 				{
-					// First, add it to the database of points to give it a generated name.
-					allPoints.put(intersectionPoint.getX(), intersectionPoint.getY());
+					givenPoints.put(intersectionPoint.getX(), intersectionPoint.getY());
 					
-					// Add the database point to the set of implicit points.
-					implicitPoints.add(allPoints.getPoint(intersectionPoint));
+					// Add the point with its generated name to the set of implicit Points.
+					implicitPoints.add(givenPoints.getPoint(intersectionPoint));
+					
 				}
+
 			}
 		}
-		// Update the original PointDatabase to include all implicit points.
-		// does nothing
-		givenPoints = allPoints;
-		
-		return implicitPoints;
+
+		if(!implicitPoints.isEmpty()) System.out.println(implicitPoints.toArray()[0]);
+ 		return implicitPoints;
 	}
 }
