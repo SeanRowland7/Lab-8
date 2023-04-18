@@ -25,5 +25,41 @@ import utilities.eq_classes.LinkedEquivalenceClass;
  */
 public class AngleLinkedEquivalenceClass extends LinkedEquivalenceClass<Angle>
 {
-    // TODO
+    public AngleLinkedEquivalenceClass()
+    {
+    	super(new AngleStructureComparator());
+    }
+    
+    @Override
+    public boolean belongs(Angle angle)
+    { 
+    	// Check if the angle is structurally comparable to the canonical
+    	return _comparator.compare(angle, _canonical) != AngleStructureComparator.STRUCTURALLY_INCOMPARABLE;
+    }
+    /**
+	 *	Adds an element to the equivalence class if it belongs. 
+	 *	Returns whether is was successfully added.
+	 */
+    @Override
+	public boolean add(Angle angle)
+	{
+    	// If there is 
+    	if(_canonical ==  null) 
+    	{
+    		_canonical = angle;
+    		return true;
+    	}
+    		
+    	
+    	if(!belongs(angle)) return false;
+    	
+    	//check if angle is structuraclly smaller then the canonical
+    	if (_comparator.compare(angle, _canonical) == -1)
+    	{
+    		_rest.addToFront(_canonical);
+    		_canonical = angle;
+    	}
+
+		
+	}
 }

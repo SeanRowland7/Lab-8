@@ -184,9 +184,7 @@ public class Angle implements Comparable<Angle>
 		
 		Angle that = (Angle)obj;
 		
-		if(this.getVertex() != that.getVertex()) return false;
-		
-		return areRaysEqual(that);
+		return this.getVertex() != that.getVertex() && areRaysEqual(that);
 	}
 	
 	private boolean areRaysEqual(Angle that) 
