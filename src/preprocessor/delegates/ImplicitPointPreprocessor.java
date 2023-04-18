@@ -51,6 +51,8 @@ public class ImplicitPointPreprocessor
 				Point intersectionPoint = seg1.segmentIntersection(seg2);
 
 				// If a new intersection point exists then put it in the database.
+				
+				//if valid, put
 				if(intersectionPoint != null && allPoints.getPoint(intersectionPoint) == null) 
 				{
 					// First, add it to the database of points to give it a generated name.
@@ -62,6 +64,7 @@ public class ImplicitPointPreprocessor
 			}
 		}
 		// Update the original PointDatabase to include all implicit points.
+		// does nothing
 		givenPoints = allPoints;
 		
 		return implicitPoints;

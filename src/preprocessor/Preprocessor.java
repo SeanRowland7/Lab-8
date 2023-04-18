@@ -71,6 +71,8 @@ public class Preprocessor
 		//
 		// Implicit Points
 		//
+		
+		// change so that the database is updated
 		_implicitPoints = ImplicitPointPreprocessor.compute(_pointDatabase, _givenSegments.stream().toList());
 
 		//
@@ -181,6 +183,7 @@ public class Preprocessor
 		return allNonMinimalSegments;
 	}
 
+	// Get all the minimal segments that are collinear to seg1.
 	private HashSet<Segment> getCollinearMinimalSegments(Segment seg1, Set<Segment> allMinimalSegments) 
 	{
 		HashSet<Segment> collinearMinimalSegments = new HashSet<Segment>();
@@ -197,6 +200,7 @@ public class Preprocessor
 		return collinearMinimalSegments;
 	}
 
+	// Calculate all the non-minimal segments that can be constructed from the set of collinear minimal segments.
 	private Set<Segment> getNonMinimalSegments(Set<Segment> collinearMinimalSegments) 
 	{
 		Set<Segment> nonMinimalSegments = new HashSet<Segment>();
@@ -215,6 +219,7 @@ public class Preprocessor
 			{
 				Point pt = seg1.sharedVertex(seg2);
 				
+		//make own method
 				// Check whether the two segments share a vertex and coincide without overlapping.
 				if(pt != null && seg1.coincideWithoutOverlap(seg2))
 				{
