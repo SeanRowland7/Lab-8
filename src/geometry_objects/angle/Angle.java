@@ -161,6 +161,7 @@ public class Angle implements Comparable<Angle>
     	return null;
     }
 	
+    
 	@Override
 	public String toString()
 	{
@@ -169,10 +170,28 @@ public class Angle implements Comparable<Angle>
 				            _ray2Endpoint.getName() +
 				            " = " + String.format("%1$.3f", _measure) + ")";
 	}
-
+	
+	
+	/*
+	 * @param obj -- an Angle
+	 * @return true / false whether a given angle has the same vertex and three points
+	 * as this this angle's rays 
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
-		// TODO
+		if(!(obj instanceof Angle)) return false;
+		
+		Angle that = (Angle)obj;
+		
+		if(this.getVertex() != that.getVertex()) return false;
+		
+		return areRaysEqual(that);
+	}
+	
+	private boolean areRaysEqual(Angle that) 
+	{
+		return this.getRay1().equals(that.getRay1()) && this.getRay2().equals(that.getRay2())||
+				this.getRay1().equals(that.getRay2()) && this.getRay2().equals(that.getRay1());			
 	}
 }

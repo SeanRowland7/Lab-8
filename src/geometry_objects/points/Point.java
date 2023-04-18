@@ -12,6 +12,7 @@
 package geometry_objects.points;
 
 import utilities.math.MathUtilities;
+import utilities.math.analytic_geometry.GeometryUtilities;
 
 public class Point implements Comparable<Point>
 {
@@ -117,5 +118,10 @@ public class Point implements Comparable<Point>
 	public String toString()
 	{
 		return _name + "(" + _x + ", " + _y + ")";
+	}
+
+	public static double distance(Point a, Point b) 
+	{
+		return GeometryUtilities.distance(a,  b);
 	}
 }
