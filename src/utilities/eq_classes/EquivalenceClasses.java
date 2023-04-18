@@ -13,7 +13,7 @@ import java.util.List;
 * @date 02/11/2023
 */
 
-class EquivalenceClasses<T> 
+public class EquivalenceClasses<T> 
 {
 	
 	protected Comparator<T> _comparator;
