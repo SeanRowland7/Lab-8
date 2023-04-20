@@ -96,9 +96,7 @@ public class EquivalenceClasses<T>
 	 */
 	protected int indexOfClass(T element) {
 		
-		int index = 0;
-		
-		for(; index < _classes.size(); index++) {
+		for(int index = 0; index < _classes.size(); index++) {
 			
 			if(_classes.get(index).belongs(element)) return index;
 			

@@ -22,5 +22,25 @@ import utilities.eq_classes.EquivalenceClasses;
  */
 public class AngleEquivalenceClasses extends EquivalenceClasses<Angle>
 {
-	// TODO
+	public AngleEquivalenceClasses()
+	{
+		super(new AngleStructureComparator());
+	}
+	
+	/**
+	 *	Add a given angle to an existing class if it fits in one,
+	 *  otherwise create a new AngleLinkedEquivalenceClass for the element.
+	 */
+	public boolean add(Angle angle) 
+	{
+		int eqIndex = indexOfClass(angle);
+		
+		if(eqIndex != -1) return _classes.get(eqIndex).add(angle);
+		
+		AngleLinkedEquivalenceClass list =new AngleLinkedEquivalenceClass();
+		
+		_classes.add(list);
+		
+		return list.add(angle);
+	}
 }
