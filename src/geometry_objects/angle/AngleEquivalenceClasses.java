@@ -34,11 +34,9 @@ public class AngleEquivalenceClasses extends EquivalenceClasses<Angle>
 	public boolean add(Angle angle) 
 	{
 		int eqIndex = indexOfClass(angle);
-		
 		if(eqIndex != -1) return _classes.get(eqIndex).add(angle);
 		
-		AngleLinkedEquivalenceClass list =new AngleLinkedEquivalenceClass();
-		
+		AngleLinkedEquivalenceClass list = new AngleLinkedEquivalenceClass();
 		_classes.add(list);
 		
 		return list.add(angle);
