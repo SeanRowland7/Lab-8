@@ -50,16 +50,10 @@ public class TriangleIdentifier
 					Segment seg2 = segmentList.get(j);
 					Segment seg3 = segmentList.get(k);
 					
-					try 
-					{
+					try {
 						Triangle triangle = new Triangle(Arrays.asList(seg1, seg2, seg3));
-						if (!_triangles.contains(triangle)) _triangles.add(triangle);
-					}
-					
-					catch (FactException e) 
-					{
-						// if creation of trianlge throws an error -> do nothing 
-						
+						_triangles.add(triangle);
+					}catch (FactException e) {
 						//System.err.println("Error creating triangle: " + e.getMessage());
 					}
 				}
