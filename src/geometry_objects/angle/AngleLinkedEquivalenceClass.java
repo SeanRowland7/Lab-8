@@ -33,9 +33,13 @@ public class AngleLinkedEquivalenceClass extends LinkedEquivalenceClass<Angle>
     @Override
     public boolean belongs(Angle angle)
     { 
+    	// Check to make sure the angle is not already in the list.
+    	if(contains(angle)) return false;
+    		
     	// Check if the angle is structurally comparable to the canonical
     	return _comparator.compare(angle, _canonical) != AngleStructureComparator.STRUCTURALLY_INCOMPARABLE;
     }
+    
     /**
 	 *	Adds an element to the equivalence class if it belongs. 
 	 *	Returns whether is was successfully added.
@@ -43,23 +47,25 @@ public class AngleLinkedEquivalenceClass extends LinkedEquivalenceClass<Angle>
     @Override
 	public boolean add(Angle angle)
 	{
-    	// If there is 
-    	if(_canonical ==  null) 
+    	// If there is no canonical, then add the angle as the canonical.
+    	if(isEmpty()) 
     	{
     		_canonical = angle;
     		return true;
     	}
     		
-    	
+    	// If the angle does not belong with the eq class then return false.
     	if(!belongs(angle)) return false;
     	
-    	//check if angle is structuraclly smaller then the canonical
+    	//check if angle is structurally smaller then the canonical
     	if (_comparator.compare(angle, _canonical) == -1)
-    	{
-    		_rest.addToFront(_canonical);
-    		_canonical = angle;
+    	{	
+    		// Update the canonical to be the structurally smaller angle.
+    		return demoteAndSetCanonical(angle);
     	}
-
-		
+    	
+    	// Otherwise, add the angle to the rest of the list
+    	_rest.addToFront(angle);
+    	return true;
 	}
 }

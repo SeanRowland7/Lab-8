@@ -34,6 +34,14 @@ public class AngleIdentifier
 
 	private void computeAngles()
 	{
-		// TODO
+		//get all the segments in the figure
+		
+		//loop through all combinations
+		
+				// If two segs share an endpoint, get the angle between them
+		
+				// Add the angle to an equivalence class.
+		
+		
 	}
 }
