@@ -86,7 +86,11 @@ public class LinkedEquivalenceClass<T>
 	public boolean contains(T target)
 	{
 		// If the class is empty or the element does not belong, then it is not in the class.
-		if(isEmpty() || !belongs(target)) return false;
+		
+		// the belongs method in the code below causes a stack overflow
+//		if(isEmpty() || !belongs(target)) return false; 
+		if(isEmpty()) return false; 
+		
 		
 		// Check if the element is the canonical element.
 		if(_canonical.equals(target)) return true;
