@@ -39,9 +39,9 @@ public class AngleIdentifier
 		List<Segment> segmentList = new ArrayList<>(_segments.keySet());
 		
 		//loop through all combinations
-		for (int i = 0; i < segmentList.size() - 2; i++)
+		for (int i = 0; i < segmentList.size() - 1; i++)
 		{
-			for (int j = i + 1; j < segmentList.size() - 1; j++)
+			for (int j = i + 1; j < segmentList.size(); j++)
 			{
 				Segment seg1 = segmentList.get(i);
 				Segment seg2 = segmentList.get(j);
