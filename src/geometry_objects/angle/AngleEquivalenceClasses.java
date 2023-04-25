@@ -41,6 +41,8 @@ public class AngleEquivalenceClasses extends EquivalenceClasses<Angle>
 	@Override
 	public boolean add(Angle angle) 
 	{
+		if(contains(angle)) return false;
+		
 		// if index is valid -> get class and add
 		int eqIndex = indexOfClass(angle);
 		if(eqIndex != -1) return _classes.get(eqIndex).add(angle);
