@@ -1,20 +1,18 @@
-/**
- * Write a succinct, meaningful description of the class here. You should avoid wordiness    
- * and redundancy. If necessary, additional paragraphs should be preceded by <p>,
- * the html tag for a new paragraph.
- *
- * <p>Bugs: (a list of bugs and / or other problems)
- *
- * @author <your name>
- * @date   <date of completion>
- */
-
 package geometry_objects.angle.comparators;
 
 import java.util.Comparator;
 
 import geometry_objects.angle.Angle;
 
+/**
+ * The AngleStructureComparator class provides a comparator for comparing the structure
+ * of angles.
+ *
+ * <p>Bugs: None
+ *
+ * @author Sean Rowland, Caden Parry
+ * @date   25 April 2023
+ */
 public class AngleStructureComparator implements Comparator<Angle>
 {
 	public static final int STRUCTURALLY_INCOMPARABLE = Integer.MAX_VALUE;

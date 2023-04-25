@@ -19,7 +19,13 @@ import utilities.eq_classes.EquivalenceClasses;
  * 
  *   canonical = BAE
  *   rest = BAF, CAE, DAE, CAF, DAF
+ *
+ * <p>Bugs: None
+ *
+ * @author Sean Rowland, Caden Parry
+ * @date   25 April 2023
  */
+
 public class AngleEquivalenceClasses extends EquivalenceClasses<Angle>
 {
 	public AngleEquivalenceClasses()
