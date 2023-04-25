@@ -2,7 +2,9 @@ package geometry_objects.angle.comparators;
 
 import java.util.Comparator;
 
+import geometry_objects.Segment;
 import geometry_objects.angle.Angle;
+import utilities.math.MathUtilities;
 
 /**
  * The AngleStructureComparator class provides a comparator for comparing the structure
@@ -57,14 +59,40 @@ public class AngleStructureComparator implements Comparator<Angle>
 		// no overlay -> not structurally comparable
 		if (!left.overlays(right)) return STRUCTURALLY_INCOMPARABLE;
 		
+		Double lengthOfLeftRay1;
+		Double lengthOfLeftRay2;
+		Double lengthOfRightRay1;
+		Double lengthOfRightRay2;
+		
+		// Ensure that left ray 1 corresponds to right ray 1.
+		if(Segment.overlaysAsRay(left.getRay1(), right.getRay1()))
+		{
+			lengthOfLeftRay1 = left.getRay1().length();
+			lengthOfLeftRay2 = left.getRay2().length();
+			lengthOfRightRay1 = right.getRay1().length();
+			lengthOfRightRay2 = right.getRay2().length();
+		}
+		else
+		{
+			lengthOfLeftRay1 = left.getRay1().length();
+			lengthOfLeftRay2 = left.getRay2().length();
+			lengthOfRightRay1 = right.getRay2().length();
+			lengthOfRightRay2 = right.getRay1().length();
+		}
+		
 		// both left rays >= right rights -> 1
-		if (left.getRay1().length() >= right.getRay1().length() &&
-				left.getRay2().length() >= right.getRay2().length()) return 1;
+		if (isGreaterOrEqual(lengthOfLeftRay1, lengthOfRightRay1) && isGreaterOrEqual(lengthOfLeftRay2, lengthOfRightRay2)) return 1;
 		
 		// both left rays <= right rays-> -1
-		if (left.getRay1().length() <= right.getRay1().length() &&
-				left.getRay2().length() <= right.getRay2().length()) return -1;
+		if (isGreaterOrEqual(lengthOfRightRay1, lengthOfLeftRay1) && isGreaterOrEqual(lengthOfRightRay2, lengthOfLeftRay2)) return -1;
 		
 		return 0;
+	}
+	
+	private boolean isGreaterOrEqual(double num1, double num2)
+	{
+		if(MathUtilities.doubleEquals(num1, num2)) return true;
+		
+		return num1 > num2;
 	}
 }
