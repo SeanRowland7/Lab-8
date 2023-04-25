@@ -12,7 +12,6 @@ import java.util.*;
 import input.components.ComponentNode;
 import input.components.point.PointNode;
 import input.visitor.ComponentNodeVisitor;
-import utilities.io.StringUtilities;
 
 public class SegmentNodeDatabase implements ComponentNode{
 

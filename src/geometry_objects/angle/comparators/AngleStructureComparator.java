@@ -13,11 +13,7 @@ package geometry_objects.angle.comparators;
 
 import java.util.Comparator;
 
-import geometry_objects.Segment;
 import geometry_objects.angle.Angle;
-import geometry_objects.points.Point;
-import utilities.math.MathUtilities;
-import utilities.math.analytic_geometry.GeometryUtilities;
 
 public class AngleStructureComparator implements Comparator<Angle>
 {
@@ -60,12 +56,14 @@ public class AngleStructureComparator implements Comparator<Angle>
 	@Override
 	public int compare(Angle left, Angle right)
 	{
-		//overlays has a vertex check build in
+		// no overlay -> not structurally comparable
 		if (!left.overlays(right)) return STRUCTURALLY_INCOMPARABLE;
 		
+		// both left rays >= right rights -> 1
 		if (left.getRay1().length() >= right.getRay1().length() &&
 				left.getRay2().length() >= right.getRay2().length()) return 1;
 		
+		// both left rays <= right rays-> -1
 		if (left.getRay1().length() <= right.getRay1().length() &&
 				left.getRay2().length() <= right.getRay2().length()) return -1;
 		

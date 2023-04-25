@@ -1,6 +1,5 @@
 package input.components.point;
 
-import input.components.ComponentNode;
 import utilities.math.MathUtilities;
 
 /**

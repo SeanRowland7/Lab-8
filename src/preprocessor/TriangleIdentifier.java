@@ -38,8 +38,9 @@ public class TriangleIdentifier
 
 	private void computeTriangles()
 	{
-	    List<Segment> segmentList = new ArrayList<>(_segments.keySet());
+		List<Segment> segmentList = new ArrayList<>(_segments.keySet());
 
+		// loop all possible combonations
 		for (int i = 0; i < segmentList.size() - 2; i++)
 		{
 			for (int j = i + 1; j < segmentList.size() - 1; j++)
@@ -49,13 +50,14 @@ public class TriangleIdentifier
 					Segment seg1 = segmentList.get(i);
 					Segment seg2 = segmentList.get(j);
 					Segment seg3 = segmentList.get(k);
-					
-					try {
+
+					try 
+					{
+						// attempt to make and add a new triangle
 						Triangle triangle = new Triangle(Arrays.asList(seg1, seg2, seg3));
 						_triangles.add(triangle);
-					}catch (FactException e) {
-						//System.err.println("Error creating triangle: " + e.getMessage());
 					}
+					catch (FactException e) {}
 				}
 			}
 		}

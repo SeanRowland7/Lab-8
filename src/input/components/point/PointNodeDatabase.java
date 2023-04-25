@@ -10,7 +10,6 @@ import java.util.*;
 
 import input.components.ComponentNode;
 import input.visitor.ComponentNodeVisitor;
-import utilities.io.StringUtilities;
 
 public class PointNodeDatabase implements ComponentNode{
 
