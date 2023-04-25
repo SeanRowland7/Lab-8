@@ -10,7 +10,15 @@ import java.util.Set;
 import exceptions.FactException;
 import geometry_objects.Segment;
 import geometry_objects.Triangle;
-
+/**
+ * The TriangleIdentifier class provides functionality to compute the triangles
+ *  present in a geometry figure given ALL segments present in that figure
+ *
+ * <p>Bugs: None
+ *
+ * @author Sean Rowland, Caden Parry
+ * @date   24 April 2023
+ */
 public class TriangleIdentifier
 {
 	protected Set<Triangle>         _triangles;
@@ -23,7 +31,7 @@ public class TriangleIdentifier
 
 	/*
 	 * Compute the figure triangles on the fly when requested;
-	 * memoize results for subsequent calls.
+	 * memorize results for subsequent calls.
 	 */
 	public Set<Triangle> getTriangles()
 	{
@@ -40,7 +48,7 @@ public class TriangleIdentifier
 	{
 		List<Segment> segmentList = new ArrayList<>(_segments.keySet());
 
-		// loop all possible combonations
+		// Check all possible combinations of segments.
 		for (int i = 0; i < segmentList.size() - 2; i++)
 		{
 			for (int j = i + 1; j < segmentList.size() - 1; j++)
@@ -53,10 +61,10 @@ public class TriangleIdentifier
 
 					try 
 					{
-						// attempt to make and add a new triangle
-						Triangle triangle = new Triangle(Arrays.asList(seg1, seg2, seg3));
-						_triangles.add(triangle);
+						// Attempt to make and add a new triangle
+						_triangles.add(new Triangle(Arrays.asList(seg1, seg2, seg3)));
 					}
+					// If the triangle cannot be constructed, do nothing.
 					catch (FactException e) {}
 				}
 			}

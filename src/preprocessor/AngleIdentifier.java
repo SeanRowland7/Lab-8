@@ -9,6 +9,15 @@ import geometry_objects.Segment;
 import geometry_objects.angle.Angle;
 import geometry_objects.angle.AngleEquivalenceClasses;
 
+/**
+ * The AngleIdentifier class provides functionality to compute the angles
+ *  present in a geometry figure given ALL segments present in that figure
+ *
+ * <p>Bugs: None
+ *
+ * @author Sean Rowland, Caden Parry
+ * @date   24 April 2023
+ */
 public class AngleIdentifier
 {
 	protected AngleEquivalenceClasses _angles;
@@ -20,7 +29,7 @@ public class AngleIdentifier
 	}
 
 	/*
-	 * Compute the figure triangles on the fly when requested; memoize results for subsequent calls.
+	 * Compute the figure triangles on the fly when requested; memorize results for subsequent calls.
 	 */
 	public AngleEquivalenceClasses getAngles()
 	{
@@ -35,23 +44,21 @@ public class AngleIdentifier
 
 	private void computeAngles()
 	{
-		//get all the segments in the figure
+		// Get the list of all segments.
 		List<Segment> segmentList = new ArrayList<>(_segments.keySet());
 		
-		//loop through all combinations
+		// Check each combination of segments
 		for (int i = 0; i < segmentList.size() - 1; i++)
 		{
 			for (int j = i + 1; j < segmentList.size(); j++)
 			{
-				Segment seg1 = segmentList.get(i);
-				Segment seg2 = segmentList.get(j);
-
 				try 
 				{
-					// If two segs share an endpoint, get the angle between them
-					// Add the angle to an equivalence class.
-					_angles.add(new Angle(seg1, seg2));
-				}catch (FactException e) {}
+					// If two segments share a vertex, add the angle to an equivalence class.
+					_angles.add(new Angle(segmentList.get(i), segmentList.get(j)));
+				} 
+				// If the angle cannot be constructed, do nothing.
+				catch (FactException e) {}
 			}
 		}
 	}
