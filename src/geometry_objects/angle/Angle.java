@@ -1,12 +1,11 @@
 /**
- * Write a succinct, meaningful description of the class here. You should avoid wordiness    
- * and redundancy. If necessary, additional paragraphs should be preceded by <p>,
- * the html tag for a new paragraph.
+ * The Angle class represents a geometric angle and provides 
+ * functionality for geometric computations.
  *
- * <p>Bugs: (a list of bugs and / or other problems)
+ * <p>Bugs: None
  *
- * @author <your name>
- * @date   <date of completion>
+ * @author Sean Rowland, Caden Parry
+ * @date   25 April 2023
  */
 
 package geometry_objects.angle;
