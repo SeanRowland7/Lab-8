@@ -1,5 +1,6 @@
 package preprocessor;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import exceptions.FactException;
 import geometry_objects.Segment;
 import geometry_objects.Triangle;
+import geometry_objects.angle.Angle;
+import geometry_objects.angle.AngleEquivalenceClasses;
 import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
 import input.components.ComponentNode;
@@ -27,7 +30,7 @@ class TriangleIdentifierTest
 	
 	protected void init(String filename)
 	{
-		String figureStr = utilities.io.FileUtilities.readFileFilterComments("crossing_symmetric_triangle.json");
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments(filename);
 
 		ComponentNode node = InputFacade.extractFigure(figureStr);
 
@@ -115,6 +118,82 @@ class TriangleIdentifierTest
 			expectedTriangles.add(new Triangle(Arrays.asList(ac, cd, ad)));
 
 			expectedTriangles.add(new Triangle(Arrays.asList(ad, de, ae)));
+		}
+		catch (FactException te) { System.err.println("Invalid triangles in triangle test."); }
+
+		assertEquals(expectedTriangles.size(), computedTriangles.size());
+		
+		for (Triangle computedTriangle : computedTriangles)
+		{
+			assertTrue(expectedTriangles.contains(computedTriangle));
+		}
+	}
+	
+	@Test
+	void test_fully_connected_square()
+	{
+		//       (0, 1)   (1, 1)
+		//			A-------B
+		//			| \   / |
+		//			|   X   |
+		//			| /   \ |
+		//			C-------D
+		//		 (0, 0)   (1, 0)
+
+
+
+		init("fully_connected_square.json");
+
+		TriangleIdentifier triIdentifier = new TriangleIdentifier(_segments);
+
+		Set<Triangle> computedTriangles = triIdentifier.getTriangles();
+
+		System.out.println(computedTriangles);
+
+		assertEquals(8, computedTriangles.size());
+		
+		//
+		// ALL original segments: 6 in this figure.
+		//
+		
+		Segment ab = new Segment(_points.getPoint("A"), _points.getPoint("B"));
+		Segment ac = new Segment(_points.getPoint("A"), _points.getPoint("C"));
+		Segment ad = new Segment(_points.getPoint("A"), _points.getPoint("D"));
+
+		Segment bc = new Segment(_points.getPoint("B"), _points.getPoint("C"));
+		Segment bd = new Segment(_points.getPoint("B"), _points.getPoint("D"));
+
+		Segment cd = new Segment(_points.getPoint("C"), _points.getPoint("D"));
+
+		//
+		// Implied minimal segments: 4 in this figure.
+		//
+		Point a_star = _points.getPoint(0.5, 0.5);
+
+		Segment a_star_a = new Segment(a_star, _points.getPoint("A"));
+		Segment a_star_b = new Segment(a_star, _points.getPoint("B"));
+		Segment a_star_c = new Segment(a_star, _points.getPoint("C"));
+		Segment a_star_d = new Segment(a_star, _points.getPoint("D"));
+
+		//
+		// Non-minimal, computed segments: 0 in this figure.
+		//
+
+		//
+		// Triangles we expect to find
+		//
+		List<Triangle> expectedTriangles = new ArrayList<Triangle>();
+		try {
+			expectedTriangles.add(new Triangle(Arrays.asList(ab, a_star_a, a_star_b)));
+			expectedTriangles.add(new Triangle(Arrays.asList(bd, a_star_b, a_star_d)));
+			expectedTriangles.add(new Triangle(Arrays.asList(cd, a_star_c, a_star_d)));
+			expectedTriangles.add(new Triangle(Arrays.asList(ac, a_star_a, a_star_c)));
+			
+			expectedTriangles.add(new Triangle(Arrays.asList(ab, bd, ad)));
+			expectedTriangles.add(new Triangle(Arrays.asList(ac, ad, cd)));
+			
+			expectedTriangles.add(new Triangle(Arrays.asList(ab, ac, bc)));
+			expectedTriangles.add(new Triangle(Arrays.asList(bd, cd, bc)));
 		}
 		catch (FactException te) { System.err.println("Invalid triangles in triangle test."); }
 
