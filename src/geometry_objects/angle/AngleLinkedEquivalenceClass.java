@@ -33,6 +33,8 @@ public class AngleLinkedEquivalenceClass extends LinkedEquivalenceClass<Angle>
     @Override
     public boolean belongs(Angle angle)
     { 
+    	if(isEmpty()) return true;
+    	
     	// Check to make sure the angle is not already in the list.
     	if(contains(angle)) return false;
     		
