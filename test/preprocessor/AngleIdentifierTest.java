@@ -28,7 +28,7 @@ class AngleIdentifierTest
 	
 	protected void init(String filename)
 	{
-		String figureStr = utilities.io.FileUtilities.readFileFilterComments("crossing_symmetric_triangle.json");
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments(filename );
 
 		ComponentNode node = InputFacade.extractFigure(figureStr);
 
@@ -197,5 +197,142 @@ class AngleIdentifierTest
 		{
 			assertTrue(computedAngles.contains(expected));
 		}
+	}
+	
+	@Test
+	void test_fully_connected_square()
+	{
+		//       (0, 1)   (1, 1)
+		//			A-------B
+		//			| \   / |
+		//			|   X   |
+		//			| /   \ |
+		//			C-------D
+		//		 (0, 0)   (1, 0)
+
+
+
+		init("fully_connected_square.json");
+
+		AngleIdentifier angleIdentifier = new AngleIdentifier(_segments);
+
+		AngleEquivalenceClasses computedAngles = angleIdentifier.getAngles();
+
+		// The number of classes should equate to the number of 'minimal' angles
+		assertEquals("Number of Angle Equivalence classes", 18, computedAngles.numClasses());
+		
+		//
+		// ALL original segments: 6 in this figure.
+		//
+		
+		Segment ab = new Segment(_points.getPoint("A"), _points.getPoint("B"));
+		Segment ac = new Segment(_points.getPoint("A"), _points.getPoint("C"));
+		Segment ad = new Segment(_points.getPoint("A"), _points.getPoint("D"));
+
+		Segment bc = new Segment(_points.getPoint("B"), _points.getPoint("C"));
+		Segment bd = new Segment(_points.getPoint("B"), _points.getPoint("D"));
+
+		Segment cd = new Segment(_points.getPoint("C"), _points.getPoint("D"));
+
+		//
+		// Implied minimal segments: 4 in this figure.
+		//
+		Point a_star = _points.getPoint(0.5, 0.5);
+
+		Segment a_star_a = new Segment(a_star, _points.getPoint("A"));
+		Segment a_star_b = new Segment(a_star, _points.getPoint("B"));
+		Segment a_star_c = new Segment(a_star, _points.getPoint("C"));
+		Segment a_star_d = new Segment(a_star, _points.getPoint("D"));
+
+		//
+		// Non-minimal, computed segments: 0 in this figure.
+		//
+
+		//
+		// Angles we expect to find
+		//
+		List<Angle> expectedAngles = new ArrayList<Angle>();
+		try {
+			//
+			//
+			// Angles broken down by equivalence class
+			//
+			//
+
+			// Inner angles: Straight 
+			//
+			expectedAngles.add(new Angle(a_star_a, a_star_d));
+			
+			expectedAngles.add(new Angle(a_star_b, a_star_c));
+			
+			
+			// Inner angles: Right
+			//
+			expectedAngles.add(new Angle(a_star_a, a_star_b));
+			
+			expectedAngles.add(new Angle(a_star_b, a_star_c));
+			
+			expectedAngles.add(new Angle(a_star_c, a_star_d));
+
+			expectedAngles.add(new Angle(a_star_d, a_star_a));
+			
+			// Corner Angles: Right
+			//
+			expectedAngles.add(new Angle(ac, ab));
+			
+			expectedAngles.add(new Angle(ab, bd));
+			
+			expectedAngles.add(new Angle(bd, cd));
+			
+			expectedAngles.add(new Angle(cd, ac));
+			
+			// Corner Angles: Top Left 45 
+			// 
+			expectedAngles.add(new Angle(ab, a_star_a));
+			expectedAngles.add(new Angle(ab, ad));
+									
+			expectedAngles.add(new Angle(ac, a_star_a));
+			expectedAngles.add(new Angle(ac, ad));
+
+						
+			// Corner Angles: Top Right 45 
+			// 
+			expectedAngles.add(new Angle(ab, a_star_b));
+			expectedAngles.add(new Angle(ab, bc));
+						
+			expectedAngles.add(new Angle(bd, a_star_b));
+			expectedAngles.add(new Angle(bd, bc));
+
+
+			// Corner Angles: Bottom Left 45 
+			// 
+			expectedAngles.add(new Angle(ac, a_star_c));
+			expectedAngles.add(new Angle(ac, bc));
+			
+			expectedAngles.add(new Angle(cd, a_star_c));
+			expectedAngles.add(new Angle(cd, bc));
+						
+			// Corner Angles: Bottom Right 45
+			//
+			expectedAngles.add(new Angle(cd, a_star_d));
+			expectedAngles.add(new Angle(cd, ad));
+			
+			expectedAngles.add(new Angle(bd, a_star_d));
+			expectedAngles.add(new Angle(bd, ad));	
+			
+				
+		}
+		catch (FactException te) { System.err.println("Invalid Angles in Angle test."); }
+
+		assertEquals(expectedAngles.size(), computedAngles.size());
+		
+		//
+		// Equality
+		//
+		for (Angle expected : expectedAngles)
+		{
+			assertTrue(computedAngles.contains(expected));
+		}
+		
 	}
 }
